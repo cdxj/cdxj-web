@@ -26,9 +26,8 @@
 /* 透明度 */
 /* 文章场景相关 */
 .content.data-v-6ca01612 {
-  text-align: center;
   height: 400rpx;
-  margin-top: 0;
+  margin-top: -30px;
 }
 .u-flex-1.data-v-6ca01612 {
   margin-bottom: 10px;

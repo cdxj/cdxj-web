@@ -260,11 +260,15 @@ export default {
                 });
         		return;
         	}
-            let httpData = {}
-            // 获取验证码接口
-            // this.$http.post('您的接口', httpData).then(res => {
-                this.getCodeState(); //开始倒计时
-            // })
+			let httpData = {
+				'type':'Login',
+				'phone':this.phone
+			}
+			// 获取验证码接口
+			 uni.$u.http.post("http://129.28.157.199:8001/api/user/get_sms", httpData).then(res => {
+				 console.log(res.data)
+			    this.getCodeState(); //开始倒计时
+			 })
         },
         // 手机号登录
         onSubmit() {
@@ -290,13 +294,28 @@ export default {
                 });
         		return;
         	}
-        	let httpData = {};
-        	// this.$http.post('您的接口',httpData).then(res => {
-                uni.showToast({
-                	title: '登录成功~',
-                	icon: 'none'
-                });
-            // });
+			let httpData = {
+				'phone':this.phone,
+				'sms_code':this.vCode
+			};
+			uni.$u.http.post('http://129.28.157.199:8001/api/user/login_sms',httpData).then(res => {
+			    uni.showToast({
+			    	title: '登录成功~',
+			    	icon: 'none'
+			    }); 
+				this.setLoginPopupShow(false);
+				let obj = {
+					session:res.data.SESSION,
+					name:res.data.data.name,
+					userId :res.data.data.user_id,
+					identPart:res.data.data.ident_part,
+					isManager:res.data.data.is_manager,
+					managerPart:res.data.data.manager_part,
+					phone:res.data.data.phone
+				}
+				console.log(obj)
+				this.$store.commit('setUserInfo',obj)
+			});
         }
         
         

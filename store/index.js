@@ -7,10 +7,10 @@ const store = new Vuex.Store({
 		loginPopupShow:false,//控制是否打开登录弹窗
 	},
     mutations: {
-		setUserInfo(state,userinfo){
+		setUserInfo(state,userInfo){
 			// that.$store.commit('setUserInfo',res.data)
 			// (this.$store.state.userinfo)
-					state.userinfo= userinfo
+					state.userInfo= userInfo
 		},
 		setLoginPopupShow(state,isLoginPopupShow){
 					state.loginPopupShow= isLoginPopupShow

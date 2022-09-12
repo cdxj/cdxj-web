@@ -1,5 +1,5 @@
 import App from './App.vue'
-import api from './components/kevinrong-http'
+import api from 'components/http/index.js'
 //引入vuex
 import store from 'store'
 import uView from './uni_modules/uview-ui'

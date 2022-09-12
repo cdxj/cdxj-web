@@ -2,16 +2,16 @@
 	<view class="content">
 		<view class="headBox" :style="{background:'linear-gradient(to left top,'+PrimaryColor+','+freeSpecsButtonBackground+')',paddingTop:systemInfo.navBarH+'px'}">
 		    <!-- 登录 -->
-		    <view class="u-flex u-p-l-30 u-p-r-20 u-p-t-30 u-p-b-30">
+		    <view style='margin-left: 20px;' class="u-flex u-p-l-30 u-p-r-20 u-p-t-30 u-p-b-30">
 		    	<block v-if="userInfo.session" >
-		    		<view class="u-m-r-20" style='margin-left: 20px;'>
+		    		<view class="u-m-r-20" >
 		                <image class="avatar"  mode="aspectFill" :src="userInfo.headLogo || 'http://pic2.sc.chinaz.com/Files/pic/pic9/202002/hpic2119_s.jpg'"></image>
 		            </view>
 		    		<view  class="u-flex-1" @click="onJump('/pages/user/set')" style='margin-left: 10px;'>
 		    			<view class="nickName u-flex">
 		                    <view class="name u-m-r-10" v-if="userInfo.name">{{userInfo.name}}</view>
 		                </view>
-		    			<view  class="detail" v-if="userInfo.phone">手机号：{{userInfo.phone | phone}}</view>
+		    			<view  class="detail" v-if="userInfo.phone">手机号：{{userInfo.phone }}</view>
 		                <view class="detail" v-else>手机号:未绑定</view>
 		    		</view>
 		    	</block>
@@ -93,6 +93,7 @@
 		methods: {
 		...mapMutations(['setLoginPopupShow']),
 		onJump(url){
+			console.log('个人设置')
 		    // uni.navigateTo({
 		    //     url:url
 		    // })
@@ -107,7 +108,8 @@
 			console.log(event)
 		},
 		openLogin(){
-		    this.userInfo.loginPopupShow=true
+			this.$store.commit('setLoginPopupShow',true)
+		    // this.userInfo.loginPopupShow=true
 			console.log(this.userInfo)
 		},
 		}
@@ -116,9 +118,9 @@
 
 <style lang="scss" scoped>
 	.content {
-		text-align: center;
+		// text-align: left;
 		height: 400upx;
-		margin-top: 0;
+		margin-top: -30px;
 	}
 	.u-flex-1{
 		margin-bottom:10px
