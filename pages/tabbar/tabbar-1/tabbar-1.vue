@@ -10,7 +10,7 @@
 				<view v-if="userInfo.managerPart" style="font-size: 12;">
 					{{userInfo.managerPart}}
 				</view>	
-				<view v-else  style="width: 60px;margin-left: 25px;color: white;">
+				<view v-else  style="margin-left: 25px;">
 					 <uni-data-select
 						  v-model="value"
 						  :localdata="range"
@@ -19,7 +19,7 @@
 						></uni-data-select>
 				</view>	
  			</view>
- 			<view style="margin-left: 40px;" class="input">
+ 			<view style="margin-left: 35px;" class="input">
  				<view class="icon search"></view>
  				<input placeholder="热点新闻" @tap="toSearch()" />
  			</view>
@@ -64,17 +64,20 @@
  		<!-- 商品列表 -->
  		<view class="goods-list">
  			<view class="product-list">
- 				<view class="product" v-for="paper in paperList" :key="paper.docid" @tap="toGoods(product)">
+ 				<view class="product" v-for="paper in paperList" :key="paper.docid" @tap="toGoods(paper)">
  					<image mode="widthFix" :src="paper.pic_url"></image>
  					<view class="name">{{paper.doctitle}}</view>
  					<view class="info">
- 						<!-- <view class="price"><uni-icons type="heart-filled" color="red" size="18"></uni-icons>{{paper.loves}}</view> -->
+ 						<view class="price"><uni-icons type="heart-filled" color="red" size="18"></uni-icons></view>
  						<view class="slogan">{{paper.doc_creator_name}}</view>
  					</view>
  				</view>
  			</view>
  			<view class="loading-text">{{loadingText}}</view>
  		</view>
+		<view>
+			<zwy-popup :ishide="ishide">dsa</zwy-popup>
+		</view>
  	</view>
  </template>
  <script>
@@ -82,6 +85,7 @@
  	data() {
  		return {
 			value: 0,
+			ishide:false,
 			range: [],
  			//轮播
  			swiperList:[
@@ -103,12 +107,6 @@
  					{ cat_id: 7, img: '/static/HM-shophome/category-img/7.png', title: '特产' },
  				]
  			],
- 			//推荐商品 3个
- 			pickList:[
- 				{ goods_id: 0, img: '/static/HM-shophome/pick-img/p1.jpg', price: '￥168', slogan:'限时抢购' },
- 				{ goods_id: 1, img: '/static/HM-shophome/pick-img/p2.jpg', price: '￥168', slogan:'精选商品' },
- 				{ goods_id: 2, img: '/static/HM-shophome/pick-img/p3.jpg', price: '￥168', slogan:'今日疯抢' }
- 			],
  			//猜你喜欢列表
  			paperList:[],
  			categoryHeight: '120px',
@@ -118,12 +116,12 @@
  			
  		};
  	},
- 	onReady() {
+ 	onLoad() {
  		// TODO
  		this.$api.get('/api/part/listpart').then(res => {
  			this.range = res.data.data.parts
-			console.log(this.range)
  		});
+		this.getPages()
  	},
  	onPageScroll(e){
  		//兼容iOS端下拉时顶部漂移
@@ -139,8 +137,7 @@
              uni.stopPullDownRefresh();
          }, 1000);
      },
- 	onLoad() {
-		this.getPages()
+ 	onReady() {
 	},
  	methods: {
 		getPages(){
@@ -148,13 +145,14 @@
 				nums:6
 			}
 			this.$api.post('/api/doc/get_recommend_doc',httpData).then(res => {
-				this.paperList = res.data.docs[1]
+				this.paperList = res.data.data.docs
 				console.log(res)
 			});
 		},
 		change(event){
 			// 申请认证
 		console.log(event)
+		// this.ishide = true
 		},
  		//扫一扫
  		// scan(){
@@ -176,13 +174,8 @@
  		toCategory(e){
  			uni.showToast({title: e.title});
  		},
- 		//推荐商品跳转
- 		toPick(e){
- 			uni.showToast({title: '推荐商品'+e.goods_id});
- 		},
- 		//商品跳转
  		toGoods(e){
- 			uni.showToast({title: '商品'+e.goods_id});
+ 			uni.showToast({title: '文章'+e.doctitle});
  		},
  		//更新分类指示器
  		categoryChange(event) {

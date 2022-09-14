@@ -98,7 +98,13 @@ var components
 try {
   components = {
     uniDataSelect: function() {
-      return Promise.all(/*! import() | uni_modules/uni-data-select/components/uni-data-select/uni-data-select */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-data-select/components/uni-data-select/uni-data-select")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-data-select/components/uni-data-select/uni-data-select.vue */ 216))
+      return Promise.all(/*! import() | uni_modules/uni-data-select/components/uni-data-select/uni-data-select */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-data-select/components/uni-data-select/uni-data-select")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-data-select/components/uni-data-select/uni-data-select.vue */ 208))
+    },
+    uniIcons: function() {
+      return Promise.all(/*! import() | uni_modules/uni-icons/components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-icons/components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-icons/components/uni-icons/uni-icons.vue */ 218))
+    },
+    zwyPopup: function() {
+      return __webpack_require__.e(/*! import() | uni_modules/zwy-popup/components/zwy-popup/zwy-popup */ "uni_modules/zwy-popup/components/zwy-popup/zwy-popup").then(__webpack_require__.bind(null, /*! @/uni_modules/zwy-popup/components/zwy-popup/zwy-popup.vue */ 226))
     }
   }
 } catch (e) {
@@ -234,11 +240,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 var _default =
 {
   data: function data() {
     return {
       value: 0,
+      ishide: false,
       range: [],
       //轮播
       swiperList: [
@@ -260,12 +270,6 @@ var _default =
       { cat_id: 7, img: '/static/HM-shophome/category-img/7.png', title: '特产' }]],
 
 
-      //推荐商品 3个
-      pickList: [
-      { goods_id: 0, img: '/static/HM-shophome/pick-img/p1.jpg', price: '￥168', slogan: '限时抢购' },
-      { goods_id: 1, img: '/static/HM-shophome/pick-img/p2.jpg', price: '￥168', slogan: '精选商品' },
-      { goods_id: 2, img: '/static/HM-shophome/pick-img/p3.jpg', price: '￥168', slogan: '今日疯抢' }],
-
       //猜你喜欢列表
       paperList: [],
       categoryHeight: '120px',
@@ -275,12 +279,12 @@ var _default =
 
 
   },
-  onReady: function onReady() {var _this = this;
+  onLoad: function onLoad() {var _this = this;
     // TODO
     this.$api.get('/api/part/listpart').then(function (res) {
       _this.range = res.data.data.parts;
-      console.log(_this.range);
     });
+    this.getPages();
   },
   onPageScroll: function onPageScroll(e) {
     //兼容iOS端下拉时顶部漂移
@@ -296,8 +300,7 @@ var _default =
       uni.stopPullDownRefresh();
     }, 1000);
   },
-  onLoad: function onLoad() {
-    this.getPages();
+  onReady: function onReady() {
   },
   methods: {
     getPages: function getPages() {var _this2 = this;
@@ -305,13 +308,14 @@ var _default =
         nums: 6 };
 
       this.$api.post('/api/doc/get_recommend_doc', httpData).then(function (res) {
-        _this2.paperList = res.data.docs[1];
+        _this2.paperList = res.data.data.docs;
         console.log(res);
       });
     },
     change: function change(event) {
       // 申请认证
       console.log(event);
+      // this.ishide = true
     },
     //扫一扫
     // scan(){
@@ -333,13 +337,8 @@ var _default =
     toCategory: function toCategory(e) {
       uni.showToast({ title: e.title });
     },
-    //推荐商品跳转
-    toPick: function toPick(e) {
-      uni.showToast({ title: '推荐商品' + e.goods_id });
-    },
-    //商品跳转
     toGoods: function toGoods(e) {
-      uni.showToast({ title: '商品' + e.goods_id });
+      uni.showToast({ title: '文章' + e.doctitle });
     },
     //更新分类指示器
     categoryChange: function categoryChange(event) {

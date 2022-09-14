@@ -1,7 +1,6 @@
-
-.content {
-	text-align: center;
-	height: 400rpx;
-	margin-top: 200rpx;
+.content.data-v-73730135 {
+  text-align: center;
+  height: 400rpx;
+  margin-top: 200rpx;
 }
 
