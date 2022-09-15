@@ -4,7 +4,7 @@
 		{
 			"path": "pages/tabbar/tabbar-1/tabbar-1",
 			"style": {
-				"navigationBarTitleText": "百宝乡",
+				"navigationBarTitleText": "",
 				"enablePullDownRefresh":true
 			}
 		},
@@ -60,7 +60,18 @@
                 "enablePullDownRefresh": false
             }
             
-        }
+        },
+		{
+		    "path" : "pages/baibaoxiang/index/index",
+		    "style": {
+		        "navigationBarTitleText": "百宝乡",
+		        "app-plus": {
+		            "titleNView": {
+		                "type": "transparent"
+		            }
+		        }
+		    }
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

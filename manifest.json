@@ -44,18 +44,19 @@
         },
         "usingComponents" : true
     },
-    // "h5": {
-    // 	"devServer": {
-    // 		"port": 8000,
-    // 		"disableHostCheck": true,
-    // 		"proxy": {
-    // 			"/dpc": {
-    // 				"target": "http://dpc.dapeis.net",
-    // 				"changeOrigin": true,
-    // 				"secure": false
-    // 			}
-    // 		}
-    // 	}
-    // },
+    "h5": {
+    	"devServer": {
+    		"port": 8000,
+    		"disableHostCheck": true,
+    		"proxy": {
+    			"/api": {
+    				"target": "http://129.28.157.199:8888",
+    				"changeOrigin": true,
+    				"secure": false
+					// "pathRewrite":{"^/api":""}
+    			}
+    		}
+    	}
+    },
     "vueVersion" : "2"
 }

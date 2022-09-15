@@ -265,10 +265,15 @@ export default {
 				'phone':this.phone
 			}
 			// 获取验证码接口
-			 uni.$u.http.post("http://129.28.157.199:8888/api/user/get_sms", httpData).then(res => {
-				 console.log(res.data)
-			    this.getCodeState(); //开始倒计时
-			 })
+			uni.request({
+				method: "POST",
+				data:{},
+			    url: '/api/user/get_sms', 
+			    success: (res) => {
+			        console.log(res);
+					this.getCodeState(); //开始倒计时
+			    }
+			});
         },
         // 手机号登录
         onSubmit() {
