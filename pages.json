@@ -4,13 +4,16 @@
 		{
 			"path": "pages/tabbar/tabbar-1/tabbar-1",
 			"style": {
-				"navigationBarTitleText": "uni-app",
+				"navigationBarTitleText": "百宝乡",
 				"enablePullDownRefresh":true
 			}
 		},
 		{
 			"path": "pages/tabbar/tabbar-2/tabbar-2",
-			"style": {}
+			"style": {
+				"navigationBarTitleText": "收藏列表",
+				"enablePullDownRefresh": true
+			}
 		},
 		{
 			"path": "pages/tabbar/tabbar-3/tabbar-3",
@@ -22,7 +25,9 @@
 		},
 		{
 			"path": "pages/tabbar/tabbar-5/tabbar-5",
-			"style": {}
+			"style": {
+				"navigationBarTitleText": "个人中心"
+			}
 		},
 		{
 			"path": "pages/tabbar-3-detial/tabbar-3-release/tabbar-3-release",
@@ -35,13 +40,36 @@
 		{
 			"path": "pages/tabbar-3-detial/tabbar-3-qa/tabbar-3-qa",
 			"style": {}
+		},
+		{
+		    "path" : "pages/list2detail-detail/list2detail-detail",
+		    "style": {
+		        "navigationBarTitleText": "详情",
+		        "app-plus": {
+		            "titleNView": {
+		                "type": "transparent"
+		            }
+		        }
+		    }
 		}
-	],
+	    ,{
+            "path" : "pages/page-info/page-info",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"backgroundColor": "#F8F8F8",
+		"app-plus": {
+		            "softinputMode": "adjustResize"
+		        }
 	},
 	"tabBar": {
 		"borderStyle": "black",
@@ -58,7 +86,7 @@
 				"pagePath": "pages/tabbar/tabbar-2/tabbar-2",
 				"iconPath": "static/img/tabbar/guanzhu.png",
 				"selectedIconPath": "static/img/tabbar/guanzhuactive.png",
-				"text": "关注"
+				"text": "收藏"
 			},
 			//#ifdef MP-WEIXIN
 			{

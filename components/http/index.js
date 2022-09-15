@@ -7,11 +7,15 @@ export const $http = (url, method, data, json) => {
 		uni.showLoading({
 			title:'加载中...'
 		})
-		console.log('http',store.state.userInfo)
+		// console.log('http',store.state.userInfo)
 		config.header = {
 			'content-type': json ? 'application/json' : 'application/x-www-form-urlencoded',
 			// "Authorization": uni.getStorageSync('token')
-			'Cookie': 'XJ_Session='+session
+			'Access-Control-Allow-Origin': '*',
+			'Access-Control-Allow-Credentials': "true",
+			'Access-Control-Allow-Headers': '*',
+			'Access-Control-Expose-Headers': '*',
+			'Cookie': 'XJ_Session='+session,
 			
 		}
 	}

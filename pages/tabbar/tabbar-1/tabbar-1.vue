@@ -3,14 +3,14 @@
  		<!-- 状态栏 -->
  		<view class="status" :style="{position:headerPosition}"></view>
  		<!-- 漂浮头部 -->
- 		<view class="header" :style="{position:headerPosition}">
+ 		<view class="header" style="margin-top:42px" >
  			<view class="scan">
  				<!-- <view class="icon scan" @tap="scan"></view> -->
 				<!-- <uni-icons type="location-filled" color="white" size="20"></uni-icons> -->
-				<view v-if="userInfo.managerPart" style="font-size: 12;">
+				<!-- <view v-if="userInfo.managerPart" style="font-size: 12;">
 					{{userInfo.managerPart}}
-				</view>	
-				<view v-else  style="margin-left: 25px;">
+				</view>	 -->
+				<view  style="margin-left: 25px;">
 					 <uni-data-select
 						  v-model="value"
 						  :localdata="range"
@@ -40,7 +40,7 @@
  		</view>
  		<!-- 分类轮播 -->
  		<view class="category">
- 			<view class="box">
+ 			<view class="box" style="padding: 0 10px;">
  				<swiper	class="swiper" duration="300" :style="{ height: categoryHeight }" @change="categoryChange">
  					<swiper-item v-for="(page, pageindex) in categoryList" :key="pageindex" >
  						<view class="category-list">
@@ -57,7 +57,7 @@
  		<view class="pick">
  			<view class="box">
  				<view class="title">
- 					<view class="big">热点咨询</view>
+ 					<view class="big">文章推荐</view>
  				</view>
  			</view>
  		</view>
@@ -81,7 +81,11 @@
  	</view>
  </template>
  <script>
+import { mapState, mapMutations } from 'vuex';
  export default {
+	computed:{
+	 	...mapState(['userInfo']),
+	},
  	data() {
  		return {
 			value: 0,

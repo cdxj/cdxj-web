@@ -68,8 +68,8 @@ export default {
             isPhoneLogin:true,//是否显示验证码登录
             // #endif
             // #ifndef APP-PLUS
-            isLoading:true,
-            isPhoneLogin:false,//是否显示验证码登录
+            isLoading:false,
+            isPhoneLogin:true,//是否显示验证码登录
             // #endif
             readonly: false,
             codeText: '获取验证码',
@@ -265,7 +265,7 @@ export default {
 				'phone':this.phone
 			}
 			// 获取验证码接口
-			 uni.$u.http.post("http://129.28.157.199:8001/api/user/get_sms", httpData).then(res => {
+			 uni.$u.http.post("http://129.28.157.199:8888/api/user/get_sms", httpData).then(res => {
 				 console.log(res.data)
 			    this.getCodeState(); //开始倒计时
 			 })
@@ -298,7 +298,7 @@ export default {
 				'phone':this.phone,
 				'sms_code':this.vCode
 			};
-			uni.$u.http.post('http://129.28.157.199:8001/api/user/login_sms',httpData).then(res => {
+			uni.$u.http.post('http://129.28.157.199:8888/api/user/login_sms',httpData).then(res => {
 			    uni.showToast({
 			    	title: '登录成功~',
 			    	icon: 'none'

@@ -9,8 +9,8 @@ export default {
 
 		setTimeout(() => {
 			uni.setTabBarBadge({
-				index: 1,
-				text: '31'
+				// index: 1,
+				// text: '31'
 			});
 			uni.showTabBarRedDot({
 				index: 3
@@ -26,6 +26,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang='scss'>
 /*每个页面公共css */ 
+@import "@/components/active-form/css/active-form.scss";
 </style>

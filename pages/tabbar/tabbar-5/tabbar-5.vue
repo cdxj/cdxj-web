@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<view class="headBox" :style="{background:'linear-gradient(to left top,'+PrimaryColor+','+freeSpecsButtonBackground+')',paddingTop:systemInfo.navBarH+'px'}">
+		<view class="headBox" >
 		    <!-- 登录 -->
 		    <view style='margin-left: 20px;' class="u-flex u-p-l-30 u-p-r-20 u-p-t-30 u-p-b-30">
 		    	<block v-if="userInfo.session" >
@@ -28,10 +28,11 @@
 		        </block>
 		    	<!-- <view><u-icon name="arrow-right" color="#fff" size="13"></u-icon></view> -->
 		    </view>
-			<view class="itemBox" style="padding-bottom: 15px;">
+			<view class="itemBox" style="padding: 15px;padding-bottom:70px">
 			    <view class="titleBox u-flex" style="border: none; float:left">
 			        <view class="title">功能与服务</view>
 			    </view>
+				<view style='position: relative;left:-70px;top:50px'>
 			    <u-grid :col="5" :border="false">
 			        <u-grid-item v-for="(item,index) in moreFun" :key="index"  @click="navClick(item.onPlate)">
 			            <view class="u-flex u-p-t-30 u-p-b-30" style="position: relative;flex-direction: column;justify-content: center;">
@@ -43,6 +44,7 @@
 			            </view>
 			        </u-grid-item>
 			    </u-grid>
+				</view>
 			</view>
 		</view>
 		<u-toast ref="uToast"></u-toast>

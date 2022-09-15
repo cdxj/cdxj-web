@@ -1,11 +1,15 @@
 <template>
 	<view class="content">
-		页面 - 发图文
+		<jinEdit placeholder="请输入内容" @editOk="editOk" uploadFileUrl="/#"></jinEdit> 
 	</view>
 </template>
 
 <script>
+import jinEdit from '@/components/jin-edit/jin-edit.vue';	
 	export default {
+		components: {
+		jinEdit
+		},
 		data() {
 			return {
 				title: 'Hello'
@@ -15,7 +19,9 @@
 
 		},
 		methods: {
-
+			editOk(html,text,delta,isPublic) {
+				this.$api.post
+			}
 		}
 	}
 </script>
@@ -23,7 +29,5 @@
 <style>
 	.content {
 		text-align: center;
-		height: 400upx;
-		margin-top: 200upx;
 	}
 </style>

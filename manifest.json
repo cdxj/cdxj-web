@@ -3,7 +3,7 @@
     "appid" : "__UNI__ED90B4F",
     "description" : "",
     "versionName" : "1.0.0",
-    "versionCode" : "100",
+    "versionCode" : 1,
     "transformPx" : false,
     "compatConfig" : {
         "MODE" : 2
@@ -38,11 +38,24 @@
     },
     "quickapp" : {},
     "mp-weixin" : {
-        "appid" : "",
+        "appid" : "wx98036d3723e5aeaa",
         "setting" : {
             "urlCheck" : true
         },
         "usingComponents" : true
     },
+    // "h5": {
+    // 	"devServer": {
+    // 		"port": 8000,
+    // 		"disableHostCheck": true,
+    // 		"proxy": {
+    // 			"/dpc": {
+    // 				"target": "http://dpc.dapeis.net",
+    // 				"changeOrigin": true,
+    // 				"secure": false
+    // 			}
+    // 		}
+    // 	}
+    // },
     "vueVersion" : "2"
 }
