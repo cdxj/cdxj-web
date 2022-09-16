@@ -39,13 +39,12 @@
  			</swiper>
  			<view class="keep-out"></view>
  		</view>
- 		<!-- 分类轮播 -->
  		<view class="category">
- 			<view class="box" style="padding: 0 10px;">
+ 			<view class="box" >
  				<swiper	class="swiper" duration="300" :style="{ height: categoryHeight }" @change="categoryChange">
  					<swiper-item v-for="(page, pageindex) in categoryList" :key="pageindex" >
- 						<view class="category-list">
- 							<view class="icon" v-for="category in page" :key="category.cat_id" @tap="toCategory(category)">
+ 						<view  class="category-list">
+ 							<view style="height: 80px;" class="icon"  v-for="category in page" :key="category.cat_id" @tap="toCategory(category)">
  								<image mode="widthFix" :src="category.img" @load="categoryImgLoad"></image>
  								<view>{{ category.title }}</view>
  							</view>
@@ -62,8 +61,11 @@
  				</view>
  			</view>
  		</view>
- 		<!-- 商品列表 -->
+ 		<!-- 文章列表 -->
  		<view class="goods-list">
+			 <u-sticky style="padding: 0 10px;" bgColor="#fff">
+			     <u-tabs :current="tabs" :list="list1" @click="changeTab"></u-tabs>
+			   </u-sticky>
  			<view class="product-list">
  				<view class="product" v-for="paper in paperList" :key="paper.docid" @tap="toGoods(paper)">
  					<image mode="widthFix" :src="paper.pic_url"></image>
@@ -77,7 +79,7 @@
  			<view class="loading-text">{{loadingText}}</view>
  		</view>
 		<view>
-			<zwy-popup :ishide="ishide">dsa</zwy-popup>
+			<zwy-popup :ishide="ishide">waiting....</zwy-popup>
 		</view>
  	</view>
  </template>
@@ -89,6 +91,26 @@ import { mapState, mapMutations } from 'vuex';
 	},
  	data() {
  		return {
+			tabs:0,
+			list1: [{
+				name: '生态产品',
+			}, {
+				name: 'XXXX',
+			}, {
+				name: '民宿'
+			}, {
+				name: '租房租地'
+			}, {
+				name: '农村美食'
+			}, {
+				name: '农村投资'
+			}, {
+				name: '农村投资'
+			}, {
+				name: '定点帮扶'
+			}, {
+				name: '特产'
+			}],
 			value: 0,
 			ishide:false,
 			range: [],
@@ -114,7 +136,7 @@ import { mapState, mapMutations } from 'vuex';
  			],
  			//猜你喜欢列表
  			paperList:[],
- 			categoryHeight: '120px',
+ 			categoryHeight: '160px',
  			currentPageindex: 0,
  			headerPosition:"fixed",
  			loadingText:"正在加载..."
@@ -146,6 +168,9 @@ import { mapState, mapMutations } from 'vuex';
  	onReady() {
 	},
  	methods: {
+		changeTab(item){
+			console.log(item)
+		},
 		getPages(){
 			let httpData = {
 				nums:6
@@ -199,7 +224,8 @@ import { mapState, mapMutations } from 'vuex';
  		},
  		//分类跳转
  		toCategory(e){
- 			uni.showToast({title: e.title});
+			this.tabs=e.cat_id
+ 			uni.showToast({title: e.title+'Loading...'});
  		},
  		toGoods(e){
  			uni.showToast({title: '文章'+e.doctitle});

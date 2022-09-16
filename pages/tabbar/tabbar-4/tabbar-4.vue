@@ -158,36 +158,7 @@
 					uni.navigateTo({
 						url: ''
 					})
-				} else if (item == 1) {
-					uni.navigateTo({
-						url: ''
-					})
-				} else if (item == 2) {
-					uni.showToast({
-						icon: 'none',
-						title: '暂无章节练习'
-					});
-				} else if (item == 3) {
-					uni.navigateTo({
-						url: '/pages/level/special'
-					})
-				} else if (item == 4) {
-					uni.navigateTo({
-						url: ''
-					})
-				} else if (item == 5) {
-					uni.navigateTo({
-						url: ''
-					})
-				} else if (item == 6) {
-					uni.navigateTo({
-						url: ''
-					})
-				} else if (item == 7) {
-					uni.navigateTo({
-						url: ''
-					})
-				}
+				} 
 			},
 			simulation() {
 				uni.navigateTo({

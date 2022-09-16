@@ -2,12 +2,12 @@
 	<view>
 		<view class="header all" style="margin-top: 0px;">
 			<view class="item">
-				<uni-nav-bar :title="title" color="#ffffff" background-color="transparent" right-icon="scan"
+				<uni-nav-bar :title="title" color="#ffffff" background-color="transparent" right-icon="sscan"
 					@clickLeft="showmajor" @clickRight="scan">
 					<block slot="left">
 						<view class="major">
 							<view><text class="uni-nav-bar-text">{{ major }}</text></view>
-							<uni-icons type="arrowdown" color="#ffffff" size="22" />
+							<!-- <uni-icons type="arrowdown" color="#ffffff" size="22" /> -->
 						</view>
 					</block>
 				</uni-nav-bar>
@@ -18,12 +18,12 @@
 				<view class="left">
 					<view class="pictrue">
 						<image src="@/static/index/zs.png" mode=""></image>
-						<view @click="simulation" class="text">三农服务</view>
+						<view @click="record" class="text">百宝乡</view>
 					</view>
 				</view>
 				<view class="right">
 					<view class="item">
-						<view @click="record" class="text">百宝乡</view>
+						<view @click="simulation" class="text">三农服务</view>
 					</view>
 					<view class="item">
 						<view @click="secret" class="text">村务通</view>
@@ -34,7 +34,7 @@
 		<!-- <lw-notice :showScale="true" :list="advanceListTwo"></lw-notice> -->
 		<view class="formal">
 			<view class="header">
-				<view class="title">三农服务</view>
+				<view class="title">百宝乡</view>
 			</view>
 			<view class="list">
 				<view class="item" @tap="goNext(index)" v-for="(item,index) in list1">
@@ -45,7 +45,7 @@
 		</view>
 		<view class="formal">
 			<view class="header">
-				<view class="title">百宝乡</view>
+				<view class="title">三农服务</view>
 			</view>
 			<view class="list">
 				<view class="item" @tap="goNext(index)" v-for="(item,index) in list2">
