@@ -2,12 +2,12 @@
 	<view>
 		<view class="header all" style="margin-top: 0px;">
 			<view class="item">
-				<uni-nav-bar :title="title" color="#ffffff" background-color="transparent" right-icon="scan"
+				<uni-nav-bar :title="title" color="#ffffff" background-color="transparent" right-icon="scsan"
 					@clickLeft="showmajor" @clickRight="scan">
 					<block slot="left">
 						<view class="major">
-							<view><text class="uni-nav-bar-text">{{ major }}</text></view>
-							<uni-icons type="arrowdown" color="#ffffff" size="22" />
+							<view><text class="uni-nav-bar-text">{{  }}</text></view>
+							<!-- <uni-icons type="arrowdown" color="#ffffff" size="22" /> -->
 						</view>
 					</block>
 				</uni-nav-bar>
