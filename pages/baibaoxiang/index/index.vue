@@ -6,27 +6,34 @@
  		<view class="header" style="margin-top:22px" >
  			<view class="scan">
  				<!-- <view class="icon scan" @tap="scan"></view> -->
-				<!-- <uni-icons type="location-filled" color="white" size="20"></uni-icons> -->
-				<!-- <view v-if="userInfo.managerPart" style="font-size: 12;">
-					{{userInfo.managerPart}}
-				</view>	 -->
-				<view  style="margin-left: 20px;">
-					 <uni-data-select
-						  v-model="value"
-						  :localdata="range"
-						  @change="change"
-						  placeholder="地址"
-						  style="width: 60px;font-size: 8px;"
-						></uni-data-select>
-				</view>	
+ 				<!-- <uni-icons type="location-filled" color="white" size="20"></uni-icons> -->
+ 				<!-- <view v-if="userInfo.managerPart" style="font-size: 12;">
+ 					{{userInfo.managerPart}}
+ 				</view>	 -->
+ 				<view  style="margin-left: 70px;">
+ 					 <uni-data-select
+ 						  v-model="value"
+ 						  :localdata="range"
+ 						  @change="change"
+ 						  placeholder="地址"
+ 						  class='select'
+						  style="width: 100px;font-size: 8px;"
+ 						></uni-data-select>
+ 						<!-- 						   -->
+ 				</view>	
  			</view>
- 			<view style="margin-left: 35px;" class="input">
+ 			<view style="margin-left: 65px;" class="input">
  				<view class="icon search"></view>
  				<input placeholder="热点新闻" @tap="toSearch()" />
  			</view>
- 			<!-- <view class="menu">
- 				<image mode="widthFix" src="/static/HM-shophome/face.png"></image>
+ 			<!-- <view style="margin-left: 35px;" class="input">
+ 				<view class="icon search"></view>
+ 				<input placeholder="热点新闻" @tap="toSearch()" />
  			</view> -->
+ 			<view class="menu">
+ 				<!-- <image mode="widthFix" src="/static/HM-shophome/face.png"></image> -->
+				<u-icon name="edit-pen-fill" @click="edit" color="#e4d002" size="54"></u-icon>
+ 			</view>
  		</view>
  		<!-- 占位 -->
  		<view class="place"></view>
@@ -39,13 +46,12 @@
  			</swiper>
  			<view class="keep-out"></view>
  		</view>
- 		<!-- 分类轮播 -->
  		<view class="category">
- 			<view class="box" style="padding: 0 10px;">
+ 			<view class="box" >
  				<swiper	class="swiper" duration="300" :style="{ height: categoryHeight }" @change="categoryChange">
  					<swiper-item v-for="(page, pageindex) in categoryList" :key="pageindex" >
- 						<view class="category-list">
- 							<view class="icon" v-for="category in page" :key="category.cat_id" @tap="toCategory(category)">
+ 						<view  class="category-list">
+ 							<view style="height: 80px;" class="icon"  v-for="category in page" :key="category.cat_id" @tap="toCategory(category)">
  								<image mode="widthFix" :src="category.img" @load="categoryImgLoad"></image>
  								<view>{{ category.title }}</view>
  							</view>
@@ -62,22 +68,27 @@
  				</view>
  			</view>
  		</view>
- 		<!-- 商品列表 -->
+ 		<!-- 文章列表 -->
  		<view class="goods-list">
+			 <u-sticky style="padding: 0 10px;" bgColor="#fff">
+			     <u-tabs :current="tabs" :list="list1" @click="changeTab"></u-tabs>
+			   </u-sticky>
  			<view class="product-list">
  				<view class="product" v-for="paper in paperList" :key="paper.docid" @tap="toGoods(paper)">
- 					<image mode="widthFix" :src="paper.pic_url"></image>
- 					<view class="name">{{paper.doctitle}}</view>
- 					<view class="info">
- 						<view class="price"><uni-icons type="heart-filled" color="red" size="18"></uni-icons></view>
- 						<view class="slogan">{{paper.doc_creator_name}}</view>
- 					</view>
+					<navigator class="item" hover-class="none" :url="'/pages/details/details?id=' + paper.docid">
+						<image mode="widthFix" :src="paper.pic_url"></image>
+						<view class="name">{{paper.doctitle}}</view>
+						<view class="info">
+							<view class="price"><uni-icons type="heart-filled" color="red" size="18"></uni-icons></view>
+							<view class="slogan">{{paper.doc_creator_name}}</view>
+						</view>
+					</navigator>
  				</view>
  			</view>
  			<view class="loading-text">{{loadingText}}</view>
  		</view>
 		<view>
-			<zwy-popup :ishide="ishide">dsa</zwy-popup>
+			<zwy-popup :ishide="ishide">waiting....</zwy-popup>
 		</view>
  	</view>
  </template>
@@ -89,6 +100,26 @@ import { mapState, mapMutations } from 'vuex';
 	},
  	data() {
  		return {
+			tabs:0,
+			list1: [{
+				name: '推荐',
+			},{
+				name: '租房租地',
+			}, {
+				name: '生态农品',
+			}, {
+				name: '亲子农旅'
+			}, {
+				name: '民宿民居'
+			}, {
+				name: '农村美食'
+			}, {
+				name: '农村投资'
+			}, {
+				name: '定点帮扶'
+			}, {
+				name: '名优博产'
+			}],
 			value: 0,
 			ishide:false,
 			range: [],
@@ -102,19 +133,19 @@ import { mapState, mapMutations } from 'vuex';
  			//分类
  			categoryList: [
  				[//第一页
- 					{ cat_id: 0, img: '/static/HM-shophome/category-img/0.png', title: '生态产品' },
- 					{ cat_id: 1, img: '/static/HM-shophome/category-img/1.png', title: 'XXXX' },
- 					{ cat_id: 2, img: '/static/HM-shophome/category-img/2.png', title: '民宿' },
- 					{ cat_id: 3, img: '/static/HM-shophome/category-img/3.png', title: '租房租地' },
- 					{ cat_id: 4, img: '/static/HM-shophome/category-img/4.png', title: '农村美食' },
- 					{ cat_id: 5, img: '/static/HM-shophome/category-img/5.png', title: '农村投资' },
- 					{ cat_id: 6, img: '/static/HM-shophome/category-img/6.png', title: '定点帮扶' },
- 					{ cat_id: 7, img: '/static/HM-shophome/category-img/7.png', title: '特产' },
+ 					{ cat_id: 6, img: '/static/HM-shophome/category-img/0.png', title: '租房租地' },
+ 					{ cat_id: 7, img: '/static/HM-shophome/category-img/1.png', title: '生态农品' },
+ 					{ cat_id: 8, img: '/static/HM-shophome/category-img/2.png', title: '亲子农旅' },
+ 					{ cat_id: 9, img: '/static/HM-shophome/category-img/3.png', title: '民宿民居' },
+ 					{ cat_id: 10, img: '/static/HM-shophome/category-img/3.png', title: '农村美食' },
+ 					{ cat_id: 11, img: '/static/HM-shophome/category-img/4.png', title: '农村投资' },
+ 					{ cat_id: 12, img: '/static/HM-shophome/category-img/5.png', title: '定点帮扶' },
+ 					{ cat_id: 13, img: '/static/HM-shophome/category-img/6.png', title: '名优博产' },
  				]
  			],
  			//猜你喜欢列表
  			paperList:[],
- 			categoryHeight: '120px',
+ 			categoryHeight: '160px',
  			currentPageindex: 0,
  			headerPosition:"fixed",
  			loadingText:"正在加载..."
@@ -146,9 +177,24 @@ import { mapState, mapMutations } from 'vuex';
  	onReady() {
 	},
  	methods: {
-		getPages(){
+		edit(){
+			uni.navigateTo({
+				url: '/pages/tabbar-3-detial/tabbar-3-video/tabbar-3-video'
+			})
+		},
+		changeTab(item){
+			let index = 0
+			if(item.index!=0){
+				index = item.index+5
+			}
+			console.log(index)
+			this.getPages(index)
+			index=0
+		},
+		getPages(type=0){
 			let httpData = {
-				nums:6
+				nums:3,
+				type:type
 			}
 			uni.request({
 				url:'/api/part/listpart',
@@ -199,7 +245,12 @@ import { mapState, mapMutations } from 'vuex';
  		},
  		//分类跳转
  		toCategory(e){
- 			uni.showToast({title: e.title});
+			console.log(e)
+			if(e.cat_id!=0){
+				this.tabs=e.cat_id-5
+				uni.showToast({title: e.title+'Loading...'});
+				this.getPages(e.cat_id)
+			}
  		},
  		toGoods(e){
  			uni.showToast({title: '文章'+e.doctitle});
@@ -232,6 +283,9 @@ import { mapState, mapMutations } from 'vuex';
  };
  </script>
  <style lang="scss">
+.uni-page-head {
+	margin-top: -10px !important;
+}
  @font-face {font-family:"HMfont-home";src:url('data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAAP8AAsAAAAACFwAAAOwAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHEIGVgCDHAqEEINSATYCJAMQCwoABCAFhG0HTxtLBxHVmzvJfhS4scOeC1v4zNNRK/hO5b0IHqg/8838ye5XsIDanmAkhZ1NSZygm4SsbYYkp17ICsOUxIP/ZZm9xejtQAD8zzX10geY387mEtXapUd7A5xF6oAi2pJoE8YNY1dexGkIwCSZQoiq1es2RUdhTBKA6N2jWwf0lAlVky3QEYSUrFSIOTjQ5VR5GZjt/168obDQQeLQMGY27FqtMxWf5z5fpgWCgdYugng8B8DWgQYUAhSI7qWujmhhqBAaptJfURzQ0ZEwVkfB58uCQSTZi0o3//JAItBAhGBk2gAURUrtxMQ2BQnPC1IQ8HyZmpvE1XgdMIDtwHVEJt4qkThsZwFPVHiEFTHKtWBBYGGUe/HmsZu6TluCStw+fXGMY9GyUb4b133Xrze9etV77VqzxcuXbYq8bF6/7rtxo5lY6A1cLcuCQJS3oXHswOYKUSaI71xkXr3ayZy2SIix0YumRS6AwEnLmr58WS9z2pKlYcJCCGzcXOU81Xuhp1osIWbBiUQWehda7lTvaNeCJX0WbYgksMA0hdlLo6zDp1PEomIdVu7YE4wN7nH7uGPdHXz2R3uHnX68tcP6SPE5ZSdObNpN/9dybtfmr6tHoy6+rN+DqdvnW9lUbkHTdcUWfKp1yzVr5Ag5HCqGU0Hca3jpAt2GiWFRwxYvdpYFo2b3tN/HvLeFd+BAr5Bu7CXnzKFlJb8dtP3ucx1djc+589Pep+W7X706stfvml+7i8fsWunxp7/f/uzsrgzj9Sv3p+6T7yqwvrfdy3nk/J6eZ84fnHp2lSvf/m/7H7569dDvuY/fTX+Mwdog+QVAGyB/IHmGyK8/exQrX13Maucu+y23rrbi5tQ1T3yTor3oj4kV8a8VtyxSqtQwKyXLbJF2kaI5DgAkYGICPzQG4dwfQxPVOhMEOlExSEJJAg2dTFSRhcCBRVEIQacCmBSkxnqLCAaiIZQBFGAiAIGH3SBxcRo0PFxBFXkPHETzDkLwCA1MfCJiR4tswStWxeEccIPlAbXSxS1rYEH2G0U8ZpeU+sw/Oq+80JR1NjrghW6MOT6JNgQO3NEJPTgPj4PAONK4hlKGYLqq4mVvKlc6M0YVh3PADZYH1EoXd8sHlvv+G0U8ZldDq/D+0XnVPTRl3QIdVFcr2rX090m0IXA8jjs6oYcOPMwQgSkfpnENpewRMF2FSvG2qnJ+zfmE6wATY6YSUmhCCQehg9V8advwun0+nHuJ0VP0kYrcz/Qox5hl') format('woff2');}
  .icon {
  	font-family:"HMfont-home" !important;

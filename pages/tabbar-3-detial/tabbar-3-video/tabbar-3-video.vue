@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
 		<active-form v-model="formData" num></active-form>
-		<view class="subform" @click="sub">提交表单</view>
+		<view class="subform" @click="sub">发布</view>
 	</view>
 </template>
 
@@ -54,69 +54,55 @@ import ActiveForm from "@/components/active-form/active-form";
 						},
 					},
 					{
-						id: "oodsndf",
-						placeholder: "请选择类型",
-						label: "类型",
-						type: "checkbox",
-						list: [
-							{
-								value: 1,
-								name: "类型1",
-								disabled:true,//是否禁用
-							},
-							{
-								value: 2,
-								name: "类型2",
-							},
-							{
-								value: 3,
-								name: "类型3",
-							},
-							{
-								value: 4,
-								name: "类型4",
-							},
-							{
-								value: 5,
-								name: "类型5",
-							},
-							{
-								value: 6,
-								name: "类型6",
-							},
-							{
-								value: 7,
-								name: "类型7",
-							},
-							{
-								value: 8,
-								name: "类型8",
-							},
-							{
-								value: 9,
-								name: "类型9",
-							},
-						],
-						rules: {
-							name: "interest",
-							value: [], //字段值 0 1
-							label: ['类型1'], //填入 list.name回显
-							verify: false,
-							errMess: "请选择文章类型",
-						},
+					id: "sadasgh",
+                    placeholder: "请选择类型",
+                    label: "文章类型",
+                    type: "radio",
+                    list: [
+                        {
+                            value: 1,
+                            label: "类型1",
+                        },
+                        {
+                            value: 2,
+                            label: "类型2",
+                        },
+                        {
+                            value: 3,
+                            label: "类型3",
+                        },
+                        {
+                            value: 4,
+                            label: "类型4",
+                        },
+                        {
+                            value: 5,
+                            label: "类型5",
+                        },
+                        {
+                            value: 6,
+                            label: "类型6",
+                        },
+                    ],
+                    rules: {
+                        name: "type",
+                        value: 1, // 字段值  list.value 填入回显 0 1
+                        verify: false,
+                        errMess: "请选择文章类型",
+                    },
 					},
-					{
-						id: "koptymk",
-						placeholder: "Tag",
-						label: "Tag",
-						type: "text",
-						rules: {
-							name: "company",
-							value: "",
-							verify: false,
-							errMess: "Tag名称不能为空",
-						},
-					},
+					// {
+					// 	id: "koptymk",
+					// 	placeholder: "Tag",
+					// 	label: "Tag",
+					// 	type: "text",
+					// 	rules: {
+					// 		name: "company",
+					// 		value: "",
+					// 		verify: false,
+					// 		errMess: "Tag名称不能为空",
+					// 	},
+					// },
 					{
 						id: "asdfgf",
 						placeholder: "(文章详情)",

@@ -267,7 +267,7 @@ export default {
 			// 获取验证码接口
 			uni.request({
 				method: "POST",
-				data:{},
+				data:httpData,
 			    url: '/api/user/get_sms', 
 			    success: (res) => {
 			        console.log(res);

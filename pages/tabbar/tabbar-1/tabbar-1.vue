@@ -2,8 +2,7 @@
 	<view>
 		<view class="header all" style="margin-top: 0px;">
 			<view class="item">
-				<uni-nav-bar :title="title" color="#ffffff" background-color="transparent" right-icon="scsan"
-					@clickLeft="showmajor" @clickRight="scan">
+				<uni-nav-bar :title="title" color="#ffffff" background-color="transparent" right-icon="scsan" @clickLeft="showmajor" @clickRight="scan">
 					<block slot="left">
 						<view class="major">
 							<view><text class="uni-nav-bar-text">{{  }}</text></view>
@@ -18,12 +17,12 @@
 				<view class="left">
 					<view class="pictrue">
 						<image src="@/static/index/zs.png" mode=""></image>
-						<view @click="simulation" class="text">三农服务</view>
-					</view>
+						<view @click="record" class="text">百宝乡</view>
+					</view>	
 				</view>
 				<view class="right">
 					<view class="item">
-						<view @click="record" class="text">百宝乡</view>
+						<view @click="simulation" class="text">三农服务</view>
 					</view>
 					<view class="item">
 						<view @click="secret" class="text">村务通</view>
@@ -34,7 +33,7 @@
 		<!-- <lw-notice :showScale="true" :list="advanceListTwo"></lw-notice> -->
 		<view class="formal">
 			<view class="header">
-				<view class="title">三农服务</view>
+				<view class="title">百宝乡</view>
 			</view>
 			<view class="list">
 				<view class="item" @tap="goNext(index)" v-for="(item,index) in list1">
@@ -45,7 +44,7 @@
 		</view>
 		<view class="formal">
 			<view class="header">
-				<view class="title">百宝乡</view>
+				<view class="title">三农服务</view>
 			</view>
 			<view class="list">
 				<view class="item" @tap="goNext(index)" v-for="(item,index) in list2">
@@ -75,63 +74,63 @@
 				title: '乡界',
 				major: '地区',
 				list1:[{
-						img: '@/static/index/shunxu.png',
+						img: '/static/index/4s店.png',
 						title: '农技'
 					},{
-						img: '@/static/index/shunxu.png',
+						img: '/static/index/保险-01.png',
 						title: '农资'
 					},{
-						img: '@/static/index/shunxu.png',
+						img: '/static/index/PK-01.png',
 						title: '就业需求'
 					},{
-						img: '@/static/index/shunxu.png',
+						img: '/static/index/保险-01.png',
 						title: '乡村野事'
 					},{
-						img: '@/static/index/shunxu.png',
+						img: '/static/index/估值-01.png',
 						title: '咨询'
 					},{
-						img: '@/static/index/shunxu.png',
+						img: '/static/index/人.png',
 						title: '本地服务'
 					}],
 				list2:[{
-						img: '@/static/index/shunxu.png',
+						img: '/static/index/汽车4s店.png',
 						title: '生活农品'
 					},{
-						img: '@/static/index/shunxu.png',
+						img: '/static/index/人.png',
 						title: '亲子农旅'
 					},{
-						img: '@/static/index/shunxu.png',
+						img: '/static/index/附近-01.png',
 						title: '租房租地'
 					},{
-						img: '@/static/index/shunxu.png',
+						img: '/static/index/推广.png',
 						title: '农村美食'
 					},{
-						img: '@/static/index/shunxu.png',
+						img: '/static/index/直通车.png',
 						title: '名代特产'
 					},{
-						img: '@/static/index/shunxu.png',
+						img: '/static/index/行驶-01.png',
 						title: '农村XX'
 					},{
-						img: '@/static/index/shunxu.png',
+						img: '/static/index/附近-01.png',
 						title: 'XXXX'
 					}],
 				list3:[{
-						img: '@/static/index/shunxu.png',
+						img: '/static/index/汽车4s店.png',
 						title: '政事发布'
 					},{
-						img: '@/static/index/shunxu.png',
+						img: '/static/index/排行榜-01.png',
 						title: 'XXXX'
 					},{
-						img: '@/static/index/shunxu.png',
+						img: '/static/index/钱袋-01-01.png',
 						title: '财务公开'
 					},{
-						img: '@/static/index/shunxu.png',
+						img: '/static/index/AR-01.png',
 						title: '村品展示'
 					},{
-						img: '@/static/index/shunxu.png',
+						img: '/static/index/VR体验-01.png',
 						title: '便民咨询'
 					},{
-						img: '@/static/index/shunxu.png',
+						img: '/static/index/钱袋-01-01.png',
 						title: '协商议事'
 					}]
 			}
@@ -161,8 +160,9 @@
 				} 
 			},
 			simulation() {
+				console.log('to 三农')
 				uni.navigateTo({
-					url: '/pages/level/formal'
+					url: '/pages/xiangjian/xiangjian'
 				})
 			},
 			record() {
@@ -172,10 +172,10 @@
 				})
 			},
 			secret() {
-				uni.showToast({
-					icon: 'none',
-					title: '考前密卷'
-				});
+				console.log('to 村务通')
+				uni.navigateTo({
+					url: '/pages/cunwutong/cunwutong'
+				})
 			},
 			entrance() {
 				uni.navigateTo({

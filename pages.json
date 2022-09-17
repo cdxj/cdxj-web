@@ -20,6 +20,17 @@
 			"style": {}
 		},
 		{
+			"path": "pages/cunwutong/cunwutong",
+			"style": {
+			    "navigationBarTitleText": "百宝乡",
+			    "app-plus": {
+			        "titleNView": {
+			            "type": "transparent"
+			        }
+			    }
+			}
+		},
+		{
 			"path": "pages/tabbar/tabbar-4/tabbar-4",
 			"style": {}
 		},
@@ -72,6 +83,25 @@
 		        }
 		    }
 		}
+        ,{
+            "path" : "pages/details/details",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false,
+				"query": "id=19"
+            }
+            
+        }
+        ,{
+            "path" : "pages/xiangjian/xiangjian",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
