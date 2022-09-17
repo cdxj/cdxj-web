@@ -93,6 +93,8 @@ import { mapState, mapMutations } from 'vuex';
  		return {
 			tabs:0,
 			list1: [{
+				name: '推荐',
+			},{
 				name: '生态产品',
 			}, {
 				name: 'XXXX',
@@ -224,7 +226,7 @@ import { mapState, mapMutations } from 'vuex';
  		},
  		//分类跳转
  		toCategory(e){
-			this.tabs=e.cat_id
+			this.tabs=e.cat_id+1
  			uni.showToast({title: e.title+'Loading...'});
  		},
  		toGoods(e){
