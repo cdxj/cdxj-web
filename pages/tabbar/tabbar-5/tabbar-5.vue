@@ -28,24 +28,29 @@
 		        </block>
 		    	<!-- <view><u-icon name="arrow-right" color="#fff" size="13"></u-icon></view> -->
 		    </view>
-			<view class="itemBox" style="padding: 15px;padding-bottom:70px">
+			<view class="itemBox" style="padding: 15px;padding-bottom:0px">
 			    <view class="titleBox u-flex" style="border: none; float:left">
 			        <view class="title">功能与服务</view>
 			    </view>
-				<view style='position: relative;left:-70px;top:50px'>
-			    <u-grid :col="5" :border="false">
-			        <u-grid-item v-for="(item,index) in moreFun" :key="index"  @click="navClick(item.onPlate)">
-			            <view class="u-flex u-p-t-30 u-p-b-30" style="position: relative;flex-direction: column;justify-content: center;">
-			                <image style="width: 70rpx;height: 70rpx;" :src="item.icon" />
-			                <view class="grid-text" style="color: #666;font-size: 22rpx;">{{item.word}}</view>
-			                <!-- #ifdef MP-WEIXIN -->
-			                <button style="opacity: 0;width: 100%;height: 100%;position: absolute;left: 0;top: 0;" :open-type="item.word=='客服帮助'?'contact':''"></button>
-			                <!-- #endif -->
-			            </view>
-			        </u-grid-item>
-			    </u-grid>
-				</view>
+				
 			</view>
+			
+		</view>
+		<view style="margin-top:30px;position: absolute;">
+			<view style="padding-left: 35rpx" v-for="(item,index) in moreFun" :key="index"  @click="navClick(item.onPlate)">
+				<image style="width: 70rpx;height: 70rpx;" :src="item.icon" /><view style="display: inline-block;margin-left: 24rpx;position: relative;top:-10px">{{item.word}}</view>	
+			</view>
+		<!-- <u-grid :col="5" :border="false">
+		    <u-grid-item v-for="(item,index) in moreFun" :key="index"  @click="navClick(item.onPlate)">
+		        <view class="u-flex u-p-t-30 u-p-b-30" style="position: relative;flex-direction: column;justify-content: center;">
+		            <image style="width: 70rpx;height: 70rpx;" :src="item.icon" />
+		            <view class="grid-text" style="color: #666;font-size: 22rpx;">{{item.word}}</view> -->
+		            <!-- #ifdef MP-WEIXIN -->
+		            <!-- <button style="opacity: 0;width: 100%;height: 100%;position: absolute;left: 0;top: 0;" :open-type="item.word=='客服帮助'?'contact':''"></button> -->
+		            <!-- #endif -->
+		        <!-- </view>
+		    </u-grid-item>
+		</u-grid> -->
 		</view>
 		<u-toast ref="uToast"></u-toast>
 		<f-login></f-login>
@@ -122,7 +127,7 @@
 	.content {
 		// text-align: left;
 		height: 400upx;
-		margin-top: -30px;
+		// margin-top: -30px;
 	}
 	.u-flex-1{
 		margin-bottom:10px
@@ -189,12 +194,14 @@
 	    padding: 0 24rpx;
 	    border-radius: 20rpx;
 	    overflow: hidden;
-	    margin-top: 24rpx;
+	    // margin-top: 24rpx;
 	    .titleBox {
-	        padding: 32rpx 0;
+	        // padding: 32rpx 0;
+			padding-top: 10rpx;
+			padding-bottom: 50rpx;
 	        border-bottom: 1rpx solid #eee;
 	        .title {
-	            font-size: 28rpx;
+	            font-size: 18rpx;
 	            font-weight: bold;
 	        }
 	        .word {

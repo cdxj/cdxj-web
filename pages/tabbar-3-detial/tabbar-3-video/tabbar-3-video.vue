@@ -1,5 +1,10 @@
 <template>
 	<view class="content">
+		<u-navbar
+		            title="编辑中心"
+		            :autoBack="true"
+		        >
+		        </u-navbar>
 		<active-form v-model="formData" num></active-form>
 		<view class="subform" @click="sub">发布</view>
 	</view>
