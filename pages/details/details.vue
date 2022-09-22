@@ -20,6 +20,22 @@
 				</view>
 				<!-- <image style="display: block; margin-top: 40px;" :src="paper.file_urls"></image> -->
 				<view class="desc"><parser :html="paper.doc_content"></parser></view>
+				<view>
+					<view style="margin-top: 10px;" v-if="discussions.length>0" v-for="(item,index) in discussions" :key="index">
+						<!-- 按照文章的作者进行标记作者 -->
+						<u--text mode="name" style='display: inline-block;width: 35px;' :text=item.discuss_user_name format="encrypt"></u--text><v--text style='color: #f9ae3d;width: 35px;' v-if="item.discuss_user_name==paper.doc_creator_name">(作者)</v--text>
+						对<u--text mode="name" style='display: inline-block;width: 35px;' v-if="item.reply_user_name!=null" :text=item.reply_user_name format="encrypt"></u--text><v--text style='color: #f9ae3d;' v-if="item.reply_user_name==paper.doc_creator_name">(作者)</v--text><v--text v-if="item.reply_user_name==null" >文章</v--text>评论：
+						{{item.discuss_content}}
+						<view style="margin-left: 20px;">
+							<view v-for="(it,key) in item.children_discuss" :key="key">
+								<!-- 按照文章的作者进行标记作者 -->
+								<u--text style='display: inline-block;width: 35px;' mode="name" :text=it.discuss_user_name format="encrypt"></u--text><v--text style='color: #f9ae3d;'  v-if="it.discuss_user_name==paper.doc_creator_name">(作者)</v--text>
+								对<u--text style='display: inline-block;width: 35px;' mode="name" v-if="it.reply_user_name!=null" :text=it.reply_user_name format="encrypt"></u--text><v--text style='color: #f9ae3d;'  v-if="it.reply_user_name==paper.doc_creator_name">(作者)</v--text><v--text v-if="it.reply_user_name==null" >文章</v--text>评论：
+								{{it.discuss_content}}
+							</view>
+						</view>
+					</view>
+				</view>
 			</view>
 				<lyInput commentIndex='321'   @result='submit' @like='like' />
 		</view>
@@ -64,7 +80,8 @@ export default {
 			shareUrl: '',
 			showShareTip: false,
 			showBrowserShareTip: false,
-			swiperList:[]
+			swiperList:[],
+			discussions:[]
 		};
 	},
 	onShow(e) {
@@ -116,6 +133,16 @@ export default {
 				success: (res) => {
 					this.paper = res.data.data
 					console.log(this.paper)
+					this.showPageLoading=false
+				}
+			})
+			uni.request({
+				url:'/api/doc/doc_get_discuss',
+				method:'POST',
+				data:httpData,
+				success: (res) => {
+					this.discussions = res.data.data.discuss
+					console.log(this.discussions)
 					this.showPageLoading=false
 				}
 			})

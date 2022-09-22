@@ -303,11 +303,15 @@ export default {
 				'phone':this.phone,
 				'sms_code':this.vCode
 			};
-			uni.$u.http.post('http://129.28.157.199:8888/api/user/login_sms',httpData).then(res => {
-			    uni.showToast({
-			    	title: '登录成功~',
-			    	icon: 'none'
-			    }); 
+			uni.request({
+				method: "POST",
+				data:httpData,
+			    url: '/api/user/login_sms', 
+			    success: (res) => {
+					uni.showToast({
+						title: '登录成功~',
+						icon: 'none'
+					});
 				this.setLoginPopupShow(false);
 				let obj = {
 					session:res.data.SESSION,
@@ -320,7 +324,16 @@ export default {
 				}
 				console.log(obj)
 				this.$store.commit('setUserInfo',obj)
+					this.getCodeState(); //开始倒计时
+			    }
 			});
+			// uni.$u.http.post('http://129.28.157.199:8888/api/user/login_sms',httpData).then(res => {
+			//     uni.showToast({
+			//     	title: '登录成功~',
+			//     	icon: 'none'
+			//     }); 
+				
+			// });
         }
         
         
