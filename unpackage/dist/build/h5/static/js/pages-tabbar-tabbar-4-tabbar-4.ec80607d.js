@@ -1,1 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["pages-tabbar-tabbar-4-tabbar-4"],{e7df:function(a,b,n){"use strict";n.r(b);var t,e,l,p,r=n("f0c5"),s={},u=Object(r["a"])(s,t,e,!1,null,null,null,!1,l,p);b["default"]=u.exports}}]);

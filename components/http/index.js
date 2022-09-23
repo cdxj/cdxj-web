@@ -1,7 +1,7 @@
 import http from './interface'
 import store from 'store'
 export const $http = (url, method, data, json) => {
-	let session = store.state.userInfo?store.state.userInfo.session:''
+	let session = store.state.userInfo.session?store.state.userInfo.session:''
 	//设置请求前拦截器
 	http.interceptor.request = (config) => {
 		uni.showLoading({

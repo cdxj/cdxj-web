@@ -20,30 +20,35 @@
 				</view>
 				<!-- <image style="display: block; margin-top: 40px;" :src="paper.file_urls"></image> -->
 				<view class="desc"><parser :html="paper.doc_content"></parser></view>
-				<view>
+				<hb-comment ref="hbComment" @add="add" @del="del" @like="like" @focusOn="focusOn" :deleteTip="'确认删除？'"
+				    :cmData="commentData" v-if="commentData"></hb-comment>
+				<!-- <view>
 					<view style="margin-top: 10px;" v-if="discussions.length>0" v-for="(item,index) in discussions" :key="index">
-						<!-- 按照文章的作者进行标记作者 -->
-						<u--text mode="name" style='display: inline-block;width: 35px;' :text=item.discuss_user_name format="encrypt"></u--text><v--text style='color: #f9ae3d;width: 35px;' v-if="item.discuss_user_name==paper.doc_creator_name">(作者)</v--text>
+						<u-avatar
+						            :text=item.discuss_user_name[0]
+						            fontSize="18"
+						            randomBgColor
+						    ></u-avatar><u--text mode="name" style='display: inline-block;width: 35px;' :text=item.discuss_user_name format="encrypt"></u--text><v--text style='color: #f9ae3d;width: 35px;' v-if="item.discuss_user_name==paper.doc_creator_name">(作者)</v--text>
 						对<u--text mode="name" style='display: inline-block;width: 35px;' v-if="item.reply_user_name!=null" :text=item.reply_user_name format="encrypt"></u--text><v--text style='color: #f9ae3d;' v-if="item.reply_user_name==paper.doc_creator_name">(作者)</v--text><v--text v-if="item.reply_user_name==null" >文章</v--text>评论：
 						{{item.discuss_content}}
 						<view style="margin-left: 20px;">
 							<view v-for="(it,key) in item.children_discuss" :key="key">
-								<!-- 按照文章的作者进行标记作者 -->
 								<u--text style='display: inline-block;width: 35px;' mode="name" :text=it.discuss_user_name format="encrypt"></u--text><v--text style='color: #f9ae3d;'  v-if="it.discuss_user_name==paper.doc_creator_name">(作者)</v--text>
 								对<u--text style='display: inline-block;width: 35px;' mode="name" v-if="it.reply_user_name!=null" :text=it.reply_user_name format="encrypt"></u--text><v--text style='color: #f9ae3d;'  v-if="it.reply_user_name==paper.doc_creator_name">(作者)</v--text><v--text v-if="it.reply_user_name==null" >文章</v--text>评论：
 								{{it.discuss_content}}
 							</view>
 						</view>
 					</view>
-				</view>
+				</view> -->
 			</view>
-				<lyInput commentIndex='321'   @result='submit' @like='like' />
+				<!-- <lyInput commentIndex='321'   @result='submit' @like='like' /> -->
 		</view>
 		<pageLoading v-if="showPageLoading"></pageLoading>
 	</view>
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex';
 import parser from '@/components/parser/parser.vue';
 import pageLoading from '@/components/loading/pageLoading.vue';
 import iconfont from '@/components/iconfont/iconfont.vue';
@@ -52,6 +57,9 @@ import uniPopup from '@/components/uni-popup/uni-popup.vue';
 import util from '@/common/util.js';
 import lyInput from "@/uni_modules/ly-input/components/ly-input/input.vue";
 export default {
+	computed:{
+	 	...mapState(['userInfo']),
+	},
 	components: {
 		lyInput,
 		parser,
@@ -81,7 +89,12 @@ export default {
 			showShareTip: false,
 			showBrowserShareTip: false,
 			swiperList:[],
-			discussions:[]
+			discussions:[],
+			commentData:{
+				"readNumer": 0,
+				"commentSize": 0,
+				"comment": []
+			}
 		};
 	},
 	onShow(e) {
@@ -100,7 +113,6 @@ export default {
 			title: '刷新中'
 		});
 		this.page_index = 1;
-		this.getData();
 	},
 	onReachBottom(e) {
 		if (this.hasMoreData) {
@@ -116,11 +128,47 @@ export default {
 				duration: 1000,
 			})
 		},
+		getTree(arr){
+			let res=[]
+			for(let i  = 0 ;i<arr.length;i++){
+				let tmp = {}
+				tmp.id = arr[i].id
+				tmp.owner =  arr[i].is_doc_creator
+				tmp.avatarUrl= "https://inews.gtimg.com/newsapp_ls/0/13797761970/0"
+				tmp.nickName = arr[i].discuss_user_name
+				tmp.parentId = null
+				tmp.hasLike = false
+				tmp.likeNum = 0
+				tmp.content = arr[i].discuss_content
+				tmp.createTime = arr[i].created_at
+				if(arr[i].children_discuss.length>0){
+					tmp.children = []
+					let child = arr[i].children_discuss
+					let t= {}
+					for(let j  = 0 ;j<child.length;j++){
+						t.id = child[j].id
+						t.owner =  child[j].is_doc_creator
+						t.avatarUrl= "https://inews.gtimg.com/newsapp_ls/0/13797761970/0"
+						t.nickName = child[j].discuss_user_name
+						t.parentId = child[j].parent_id
+						t.createTime = child[j].created_at
+						t.hasLike = false
+						t.likeNum = 0
+						t.content = child[j].discuss_content
+						tmp.children.push(t)
+						t = {}
+					}
+				}
+				res.push(tmp)
+				tmp = {}
+			}
+			return res
+		},
 		/*加载数据*/
 		loadData() {
 			this.getData();
 		},
-
+		
 		/*获取文章详情*/
 		getData() {
 			let httpData = {
@@ -142,10 +190,16 @@ export default {
 				data:httpData,
 				success: (res) => {
 					this.discussions = res.data.data.discuss
-					console.log(this.discussions)
+					this.commentData.comment = this.getTree(res.data.data.discuss)
+					this.commentData.commentSize = this.commentData.comment.length |0
+					this.commentData.readNumer = this.commentData.commentSize |0
+					console.log(this.commentData)
+					this.$forceUpdate()
 					this.showPageLoading=false
-				}
+				},
+				
 			})
+			this.$forceUpdate() 
 		},
 
 		/*点赞*/
@@ -155,7 +209,50 @@ export default {
 					duration: 1000,
 				})
 		},
-
+		add(e){
+			console.log(this.userInfo)
+			let httpData = {
+				doc_id :this.paper.docid,
+				discuss_content : e.content,
+				parent_id : ''
+			}
+			if(e.pId != null){
+				httpData.parent_id = e.pId
+			}
+			console.log(this.userInfo)
+			uni.request({
+				url:'/api/doc/doc_discuss',
+				withCredentials:true,
+				header:{
+					'XJ_Session':this.userInfo.session
+				},
+				method:'POST',
+				data:httpData,
+				
+				success: (res) => {
+					if(this.userInfo.session==null){
+						uni.showToast({
+							title: "请先登录",
+							duration: 1000,
+						})
+					}else{
+					
+					uni.showToast({
+						title: "评论成功",
+						duration: 1000, 
+					})}
+					this.$refs.hbComment.submit = false
+					this.getData()
+				},
+				fail:(e)=>{
+					uni.showToast({
+						title: e,
+						duration: 1000,
+					})
+				}
+				
+			})
+		},
 		
 
 	
