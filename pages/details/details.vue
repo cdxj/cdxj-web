@@ -134,7 +134,7 @@ export default {
 				let tmp = {}
 				tmp.id = arr[i].id
 				tmp.owner =  arr[i].is_doc_creator
-				tmp.avatarUrl= "https://inews.gtimg.com/newsapp_ls/0/13797761970/0"
+				tmp.avatarUrl= "/static/img/icon.webp"
 				tmp.nickName = arr[i].discuss_user_name
 				tmp.parentId = null
 				tmp.hasLike = false
@@ -148,7 +148,7 @@ export default {
 					for(let j  = 0 ;j<child.length;j++){
 						t.id = child[j].id
 						t.owner =  child[j].is_doc_creator
-						t.avatarUrl= "https://inews.gtimg.com/newsapp_ls/0/13797761970/0"
+						t.avatarUrl= "/static/img/icon.webp"
 						t.nickName = child[j].discuss_user_name
 						t.parentId = child[j].parent_id
 						t.createTime = child[j].created_at
@@ -222,10 +222,12 @@ export default {
 			let httpData = {
 				doc_id :this.paper.docid,
 				discuss_content : e.content,
-				parent_id : ''
+				parent_id : '',
+				reply_user_id:0
 			}
 			if(e.pId != null){
 				httpData.parent_id = e.pId
+				httpData.reply_user_id = this.userInfo.userId
 			}
 			
 			uni.request({
