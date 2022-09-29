@@ -1,5 +1,5 @@
 <template>
-	<view class="content">
+	<view class="content" style="margin-top: 80rpx;">
 		<u-navbar
 		            title="编辑中心"
 		            :autoBack="true"
@@ -25,7 +25,7 @@ import ActiveForm from "@/components/active-form/active-form";
 				formData: [
 					{
 						id: "kjjnsasd",
-						placeholder: "输入文章",
+						placeholder: "",
 						label: "标题",
 						type: "text",
 						disabled:false,

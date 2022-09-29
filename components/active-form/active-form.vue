@@ -116,6 +116,7 @@
                         </view>
                         <view class="img-upload p30">
                             <u-upload
+							:on-change="(val)=>changeFile(val)"
                                 :fileList="item.rules.fileList"
                                 :disabled="item.disabled"
 								
@@ -292,6 +293,7 @@ export default {
             codeFont: "获取验证码",
             wait: 60,
             isSend: false,
+			tmpPicUrl:''
         };
     },
     computed: {
@@ -306,6 +308,9 @@ export default {
         }
     },
     methods: {
+		changeFile(val){
+			console.log('val',val)
+		},
         // 删除图片
         deletePic($event, item) {
             item.rules.fileList.splice($event.index, 1)
@@ -314,44 +319,80 @@ export default {
         // 新增图片
         async afterRead($event, item) {
             // 当设置 mutiple 为 true 时, file 为数组格式，否则为对象格式
+			await this.uploadFilePromise($event.file);
 			if(item.multiple){
 				item.rules.fileList.push($event.file)
 			}else{
 				item.rules.fileList[0]=$event.file
 			}
+			console.log(item.rules.fileList)
 			let lists =item.rules.fileList
-			console.log(lists)
-			for (let i = 0; i < lists.length; i++) {
-				// TODO
-				const result = await this.uploadFilePromise(lists[i].url)
-				let item = this[`fileList${event.name}`][fileListLen]
-				this[`fileList${event.name}`].splice(fileListLen, 1, Object.assign(item, {
-					status: 'success',
-					message: '',
-					url: result
-				}))
-				fileListLen++
-				console.log(result)
-			}
-            // item.rules.fileList = item.multiple ? $event.file : [$event.file]
+			console.log('img',lists[lists.length-1][0])
+			// await this.uploadFilePromise(formdata)
+
+			// for (let i = 0; i < lists.length; i++) {
+			// 	// TODO
+			// 	const result = await this.uploadFilePromise(lists[i].url)
+			// 	let item = this[`fileList${event.name}`][fileListLen]
+			// 	this[`fileList${event.name}`].splice(fileListLen, 1, Object.assign(item, {
+			// 		status: 'success',
+			// 		message: '',
+			// 		url: result
+			// 	}))
+			// 	fileListLen++
+			// 	console.log(result)
+			// }
+            item.rules.fileList = item.multiple ? $event.file : [$event.file]
             this.$emit('input', this.formData)
         },
 		uploadFilePromise(url) {
-			return new Promise((resolve, reject) => {
-				let a = uni.uploadFile({
-					url: 'http://129.28.157.199:8001/api/file/upload_file', // 仅为示例，非真实的接口地址
-					filePath: url,
-					name: 'file',
-					formData: {
-						user: 'test'
-					},
+			return new Promise(async(resolve, reject) => {
+				const formData = new FormData();
+				const imgBlob = await uni.request({
+					url:url[0].url
+				}).then(r => r[1].blob())
+				const imgFile = new File([imgBlob], url[0].name , { type: imgBlob.type })
+				formData.append("file", imgFile);
+				console.log(imgFile)
+				uni.request({
+					url:'/api/file/upload_file',
+					// withCredentials:true,
+					// header:{
+					// 	'XJ_Session':this.userInfo.session
+					// },
+					// name:'file',
+					header: { 
+						'content-type': 'multipart/form-data',
+						'Access-Control-Allow-Origin':'*/*'
+						},
+					method:'POST',
+					// filePath: url,
+					data:formData,
+				
 					success: (res) => {
-						setTimeout(() => {
-							resolve(res.data.data)
-							console.log(res)
-						}, 1000)
+						// if(this.userInfo.session==null){
+						// 	uni.showToast({
+						// 		title: "请先登录",
+						// 		duration: 1000,
+						// 	})
+						// }else{
+						console.log('res',res)
+						uni.showToast({
+							title: "添加成功",
+							duration: 1000, 
+						})
+						this.tmpPicUrl = res.data.fileurl
+						// }
+					},
+					fail:(e)=>{
+						uni.showToast({
+							title: e,
+							duration: 1000,
+						})
 					}
-				});
+				
+			})
+			
 			})
 		},
         //显示select

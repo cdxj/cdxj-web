@@ -210,7 +210,15 @@ export default {
 				})
 		},
 		add(e){
-			console.log(this.userInfo)
+			console.log(this.userInfo.session)
+			if(this.userInfo.session==null){
+				uni.showToast({
+					title: "请先登录",
+					duration: 1000,
+				})
+				this.$refs.hbComment.submit = false
+				return 
+			}
 			let httpData = {
 				doc_id :this.paper.docid,
 				discuss_content : e.content,
@@ -219,28 +227,22 @@ export default {
 			if(e.pId != null){
 				httpData.parent_id = e.pId
 			}
-			console.log(this.userInfo)
+			
 			uni.request({
 				url:'/api/doc/doc_discuss',
 				withCredentials:true,
 				header:{
-					'XJ_Session':this.userInfo.session
+					'Xj-Token':this.userInfo.session
 				},
 				method:'POST',
 				data:httpData,
 				
 				success: (res) => {
-					if(this.userInfo.session==null){
-						uni.showToast({
-							title: "请先登录",
-							duration: 1000,
-						})
-					}else{
 					
 					uni.showToast({
 						title: "评论成功",
 						duration: 1000, 
-					})}
+					})
 					this.$refs.hbComment.submit = false
 					this.getData()
 				},
