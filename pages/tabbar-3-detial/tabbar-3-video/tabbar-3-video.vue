@@ -3,10 +3,15 @@
 		<u-navbar
 		            title="编辑中心"
 		            :autoBack="true"
+					bgColor="#ff6f2c"
+					rightText="发布"
+					titleStyle="color:white;font-size:18px"
+					@rightClick='sub'
 		        >
 		        </u-navbar>
+				
 		<active-form v-model="formData" num></active-form>
-		<view class="subform" @click="sub">发布</view>
+		<!-- <view class="subform" @click="">发布</view> -->
 	</view>
 </template>
 
@@ -65,28 +70,34 @@ import ActiveForm from "@/components/active-form/active-form";
                     type: "radio",
                     list: [
                         {
-                            value: 1,
-                            label: "类型1",
-                        },
-                        {
-                            value: 2,
-                            label: "类型2",
-                        },
-                        {
-                            value: 3,
-                            label: "类型3",
-                        },
-                        {
-                            value: 4,
-                            label: "类型4",
-                        },
-                        {
-                            value: 5,
-                            label: "类型5",
-                        },
-                        {
                             value: 6,
-                            label: "类型6",
+                            label: "租房租地",
+                        },
+                        {
+                            value: 7,
+                            label: "生态农品",
+                        },
+                        {
+                            value: 8,
+                            label: "亲子农旅",
+                        },
+                        {
+                            value: 9,
+                            label: "民宿民居",
+                        },
+                        {
+                            value: 10,
+                            label: "农村美食",
+                        },
+                        {
+                            value: 11,
+                            label: "农村投资",
+                        },{
+                            value: 12,
+                            label: "定点帮扶",
+                        },{
+                            value: 13,
+                            label: "名优博产",
                         },
                     ],
                     rules: {
@@ -129,7 +140,7 @@ import ActiveForm from "@/components/active-form/active-form";
 		watch:{
 			formData:{
 				handler(new_val,old_val){
-					// console.log(new_val)
+					// console.log('new',new_val)
 					// console.log('old',old_val)
 				},
 				deep: true
@@ -139,20 +150,47 @@ import ActiveForm from "@/components/active-form/active-form";
 		methods: {
 		// 提交表单
 			sub() {
+				if(this.userInfo.session==null){	
+					uni.switchTab({
+						url: '/pages/tabbar/tabbar-5/tabbar-5',
+						success: res => {
+							uni.showToast({
+								title: "请先登录",
+								duration: 1000,
+							})
+						},
+						fail: (e) => {
+							uni.showToast({
+								title: "请先登录",
+								duration: 1000,
+							})
+						},
+						complete: () => {}
+					})
+					
+					return 
+				}
 				let params={
 					title:this.formData[0].rules.value,
-					pic_lists:this.formData[1].rules.fileList,
+					pic_lists:this.formData[1].rules.picRet,
 					// TODO 文章类型api
-					doc_type_id:1,
-					tag:this.formData[3].rules.value,
-					content:this.formData[4].rules.value,
+					doc_type_id:this.formData[2].rules.value,
+					// tag:this.formData[3].rules.value,
+					content:this.formData[3].rules.value,
 					user_id:this.userInfo.id,
 					part_id:1
 				}
-				this.$api.post('/api/doc/doc_create',params).then(res=>{
-					console.log(res)
-				}).catch((e)=>{
-					console.log(e)
+				
+				uni.request({
+					url:'/api/doc/doc_create',
+					header:{
+						'Xj-Token':this.userInfo.session
+					},
+					method:'POST',
+					data:params,
+					success: (res) => {
+						uni.navigateTo({url: `/pages/details/details?id= ${res.data.data.doc_id}`})
+					}
 				})
 			},
 		}

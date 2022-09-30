@@ -1,12 +1,13 @@
 <template>
 	<view>
-		<u-navbar
+		<!-- <u-navbar
 			:title=title
 			:autoBack="true"
 		>
-		</u-navbar>
+		</u-navbar> -->
+		<f-navbar :title="title"  fontColor="#fff" gradient="linear-gradient(-90deg, #e4d002, #ff570a)"/>
 		<u-list
-		style='margin-top: 50px;'
+		style=''
 			@scrolltolower="scrolltolower"
 		>
 			<u-list-item
@@ -39,6 +40,7 @@
 </template>
 
 <script>
+	import fNavbar  from '@/uni_modules/f-navbar/components/f-navbar/f-navbar.vue';
 	export default {
 		data() {
 			return {

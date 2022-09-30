@@ -10,7 +10,7 @@
 						<u-tag size="mini" style='width: 70px;float: right;	margin-left:15px;text-align: center;' :text=paper.doc_type_name type="success" plain></u-tag>
 					</view>
 				</view>
-				<view style="margin-top: 40px;"  class="swiper-view">
+				<view v-if="paper.file_urls.length>0" style="margin-top: 40px;"  class="swiper-view">
 					<swiper class="swiper" indicator-dots="true" autoplay="true" circular="true" >
 						<swiper-item v-for="swiper in paper.file_urls" :key="swiper.sid" @tap="toSwiper(swiper)">
 							<image mode="aspectFill" :src="swiper"></image>

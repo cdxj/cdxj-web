@@ -4,7 +4,8 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
     state: {
 		userInfo:{},
-		loginPopupShow:false,//控制是否打开登录弹窗
+		loginPopupShow:false,//控制是否打开登录弹窗,
+		seachTabs:[]
 	},
     mutations: {
 		setUserInfo(state,userInfo){
@@ -15,6 +16,12 @@ const store = new Vuex.Store({
 		setLoginPopupShow(state,isLoginPopupShow){
 					state.loginPopupShow= isLoginPopupShow
 		},
+		setSearchTabs(state,seachTabs){
+					state.seachTabs.push(seachTabs)
+		},
+		clearST(state){
+			state.seachTabs=[]
+		}
 	},
     actions: {}
 })

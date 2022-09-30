@@ -238,7 +238,14 @@ import { mapState, mapMutations } from 'vuex';
  		// },
  		//搜索跳转
  		toSearch(){
- 			uni.showToast({title: "建议跳转到新页面做搜索功能"});
+			console.log('o')
+ 			// uni.switchTab({url: `../../search/search`})
+			uni.navigateTo({
+				url: '../../search/search',
+				fail (error) {
+				        console.log(error)
+				    }
+			})
  		},
  		//轮播图跳转
  		toSwiper(e){
