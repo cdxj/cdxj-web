@@ -177,6 +177,7 @@ import { mapState, mapMutations } from 'vuex';
          }, 1000);
      },
  	onReady() {
+		
 	},
 	onPullDownRefresh(){
 		this.getPages()
@@ -203,7 +204,7 @@ import { mapState, mapMutations } from 'vuex';
 			  let httpData = {
 			  	user_id :this.userInfo.userId,
 			  	doc_id : paper.docid,
-			  	status:this.paperList[i].is_collect
+			  	status:this.paperList[i].is_collect==0?2:1
 			  }
 			  
 			  uni.request({
@@ -218,7 +219,7 @@ import { mapState, mapMutations } from 'vuex';
 			  	success: (res) => {
 			  		
 			  		uni.showToast({
-			  			title: "收藏成功",
+			  			title: "操作成功",
 			  			duration: 1000, 
 			  		})
 			  	},
@@ -266,6 +267,9 @@ import { mapState, mapMutations } from 'vuex';
 				url:'/api/doc/get_recommend_doc',
 				method:'POST',
 				data:httpData,
+				header:{
+					'Xj-Token':this.userInfo.session
+				},
 				success: (res) => {
 					this.paperList = res.data.data.docs
 					console.log(res)

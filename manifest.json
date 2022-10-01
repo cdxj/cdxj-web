@@ -50,7 +50,7 @@
             "disableHostCheck" : true,
             "proxy" : {
                 "/api" : {
-                    "target" : "http://129.28.157.199:8888",
+                    "target" : "http://121.5.120.59:8888",
                     "changeOrigin" : true,
                     "secure" : false
                 }

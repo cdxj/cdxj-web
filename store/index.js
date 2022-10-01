@@ -26,8 +26,14 @@ const store = new Vuex.Store({
 		setPaperList(state,paperList){
 					state.paperList=state.paperList.concat(paperList)
 		},
+		setPaperListAll(state,paperList){
+					state.paperList=paperList
+		},
 		clearPL(state){
 			state.paperList=[]
+		},
+		deletePaper(state,i){
+			state.paperList.splice(i,1)
 		}
 	},
     actions: {}

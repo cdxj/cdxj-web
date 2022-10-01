@@ -56,7 +56,9 @@ export default {
 				title:'文章列表',
 				type:0,
 				// paperList:[],
-				keyword:''
+				keyword:'',
+				pageSize:0,
+				limit:3
 			}
 		},
 		onLoad(e) {
@@ -80,7 +82,10 @@ export default {
 				})
 			},
 			onReachBottom() {
-				this.loadmore()
+				this.pageSize++;
+				this.getPages()
+				console.log(this.pageSize)
+				// this.loadmore()
 			},
 			loadmore() {
 				let httpData = {
@@ -97,19 +102,19 @@ export default {
 					method:'POST',
 					data:httpData,
 					success: (res) => {
-						console.log('res',res.data.data.docs)
-						this.$store.commit('setPaperList',res.data.data.docs)
+						this.$store.commit('setPaperListAll',res.data.data.docs)
 						console.log('文章分类',this.paperList)
 					}
 				})
 
 			},
-			getPages(){
+			getPages(offset=0){
 				let httpData = {
-					limit:3,
+					limit:this.limit,
 					type:this.type,
 					order:'desc',
-					offset:0,
+					offset:this.pageSize*this.limit,
+					platform:'bbx',
 					doc_like:this.keyword
 				}
 				uni.request({
