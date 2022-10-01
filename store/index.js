@@ -5,7 +5,8 @@ const store = new Vuex.Store({
     state: {
 		userInfo:{},
 		loginPopupShow:false,//控制是否打开登录弹窗,
-		seachTabs:[]
+		seachTabs:[],
+		paperList:[]
 	},
     mutations: {
 		setUserInfo(state,userInfo){
@@ -21,6 +22,12 @@ const store = new Vuex.Store({
 		},
 		clearST(state){
 			state.seachTabs=[]
+		},
+		setPaperList(state,paperList){
+					state.paperList=state.paperList.concat(paperList)
+		},
+		clearPL(state){
+			state.paperList=[]
 		}
 	},
     actions: {}

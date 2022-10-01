@@ -5,7 +5,12 @@
 			:autoBack="true"
 		>
 		</u-navbar> -->
-		<f-navbar :title="title"  fontColor="#fff" gradient="linear-gradient(-90deg, #e4d002, #ff570a)"/>
+		<f-navbar :title="title" fontColor="#fff" gradient="linear-gradient(-90deg, #e4d002, #ff570a)">
+			<view class="u-flex" slot="right">
+       <view style="margin-left: 165px;" >
+		<u-icon name="search" color="#2979ff" @click="toSearch()" size="55"></u-icon>
+       </view>
+    </view></f-navbar>
 		<u-list
 		style=''
 			@scrolltolower="scrolltolower"
@@ -41,46 +46,78 @@
 
 <script>
 	import fNavbar  from '@/uni_modules/f-navbar/components/f-navbar/f-navbar.vue';
-	export default {
+import { mapState, mapMutations } from 'vuex';
+export default {
+	computed:{
+	 	...mapState(['paperList']),
+	},
 		data() {
 			return {
 				title:'文章列表',
 				type:0,
-				paperList:[]
+				// paperList:[],
+				keyword:''
 			}
 		},
 		onLoad(e) {
+			this.$store.commit('clearPL')
 			if(e){
 				this.title = e.title,
 				this.type = e.type
+				this.keyword=e.keyword
 			}
 			this.getPages()
 		},
 		methods: {
-			scrolltolower() {
+			toSearch(){
+				
+				// uni.switchTab({url: `../../search/search`})
+				uni.navigateTo({
+					url: '/pages/search/search?title='+this.title+'&type='+this.type,
+					fail (error) {
+					        console.log(error)
+					    }
+				})
+			},
+			onReachBottom() {
 				this.loadmore()
 			},
 			loadmore() {
-				for (let i = 0; i < 30; i++) {
-					this.indexList.push({
-						url: this.urls[uni.$u.random(0, this.urls.length - 1)]
-					})
-				}
-			},
-			getPages(){
 				let httpData = {
-					limit:9,
+					limit:3,
 					type:this.type,
 					order:'desc',
-					offset:0
+					offset:3,
+					doc_like:this.keyword,
+					platform:'bbx',
+					offset:this.paperList.length
 				}
 				uni.request({
 					url:'/api/doc/get_type_docinfo',
 					method:'POST',
 					data:httpData,
 					success: (res) => {
-						this.paperList = res.data.data.docs
-						
+						console.log('res',res.data.data.docs)
+						this.$store.commit('setPaperList',res.data.data.docs)
+						console.log('文章分类',this.paperList)
+					}
+				})
+
+			},
+			getPages(){
+				let httpData = {
+					limit:3,
+					type:this.type,
+					order:'desc',
+					offset:0,
+					doc_like:this.keyword
+				}
+				uni.request({
+					url:'/api/doc/get_type_docinfo',
+					method:'POST',
+					data:httpData,
+					success: (res) => {
+						this.$store.commit('setPaperList',res.data.data.docs)
 						console.log('文章分类',this.paperList)
 					}
 				})
@@ -109,4 +146,67 @@
 		font-size: 24upx;
 	}
 }
+ .header {
+ 	width: 100%;
+ 	height: 100upx;
+ 	background-color: #ff570a;
+ 	display: flex;
+ 	position: fixed;
+ 	top: 0;
+ 	/*  #ifdef  APP-PLUS  */
+ 	top: var(--status-bar-height);
+ 	/*  #endif  */
+ 	
+ 	z-index: 996;
+ 	.scan {
+ 		width: 100upx;
+ 		height: 100upx;
+ 		flex-shrink: 1;
+ 		display: flex;
+ 		justify-content: center;
+ 		align-items: center;
+ 	}
+ 	.input {
+ 		width: calc(100% - 200upx);
+ 		display: flex;
+ 		justify-content: center;
+ 		align-items: center;
+ 		position:relative;
+ 		input {
+ 			width: calc(100% - 60upx);
+ 			height: 60upx;
+ 			background-color: #ffffff;
+ 			border-radius: 60upx;
+ 			padding-left: 60upx;
+ 			font-size: 30upx;
+ 			
+ 		}
+ 		.icon{
+ 			width: 60upx;
+ 			height: 60upx;
+ 			position: absolute;
+ 			color: #a18090;
+ 			z-index: 996;
+ 			top: 20upx;
+ 			left: 0;
+ 			font-size: 40upx;
+ 			display: flex;
+ 			justify-content: center;
+ 			align-items: center;
+ 		}
+ 	}
+ 	.menu {
+ 		width: 100upx;
+ 		height: 100upx;
+ 		flex-shrink: 1;
+ 		display: flex;
+ 		justify-content: center;
+ 		align-items: center;
+ 		image{
+ 			width: 60upx;
+ 			height: 60upx;
+ 			border-radius: 60upx;
+ 		}
+ 	}
+ }
 </style>

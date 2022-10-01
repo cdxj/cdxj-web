@@ -1,5 +1,5 @@
 <template>
-	<view class="content" style="margin-top: 80rpx;">
+	<view class="content" style="margin-top: 100rpx;">
 		<u-navbar
 		            title="编辑中心"
 		            :autoBack="true"

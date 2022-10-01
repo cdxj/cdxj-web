@@ -25,6 +25,7 @@
 				"navigationBarTitleText": "",
 				 "navigationStyle":"custom",
 				"enablePullDownRefresh":true
+				// "onReachBottomDistance":50
 			}
 		},
 		{
@@ -138,7 +139,8 @@
             {
                 "navigationBarTitleText": "",
                 "enablePullDownRefresh": false,
-				"navigationStyle":"custom"
+				"navigationStyle":"custom",
+				"onReachBottomDistance":50
             }
             
         }

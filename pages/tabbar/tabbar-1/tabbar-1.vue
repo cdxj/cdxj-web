@@ -177,6 +177,9 @@ import { mapState, mapMutations } from 'vuex';
      },
  	onReady() {
 	},
+	onPullDownRefresh(){
+		this.getPages()
+	},
  	methods: {
 		edit(){
 			uni.navigateTo({
@@ -194,7 +197,7 @@ import { mapState, mapMutations } from 'vuex';
 		},
 		getPages(type=0){
 			let httpData = {
-				nums:3,
+				nums:7,
 				type:type
 			}
 			uni.request({
