@@ -42,16 +42,53 @@
 </template>
 
 <script>
-    export default {
+import { mapState, mapMutations } from 'vuex';
+ export default {
+	computed:{
+	 	...mapState(['userInfo','paperList']),
+	},
         data() {
             return {
                 navs: ['收藏', '文章管理'],
 				title:'文章列表',
 				type:0,
-				paperList:[]
             }
         },
+		onLoad(){
+			this.$store.commit('clearPL')
+		},
+		onReachBottom(){
+			this.getData(5)
+		},
 		methods:{
+			getData(offset=0){
+				let httpData = {
+					user_id :this.userInfo.userId,
+					offset : 0,
+					limit:5
+				}
+				
+				uni.request({
+					url:'/api/doc/get_collect_docs',
+					withCredentials:true,
+					header:{
+						'Xj-Token':this.userInfo.session
+					},
+					method:'POST',
+					data:httpData,
+					
+					success: (res) => {
+						this.$store.commit('setPaperList',res.data.data.docs)
+					},
+					fail:(e)=>{
+						uni.showToast({
+							title: e,
+							duration: 1000,
+						})
+					}
+					
+				})
+			},
 			change(cur){
 				console.log(cur)
 			}

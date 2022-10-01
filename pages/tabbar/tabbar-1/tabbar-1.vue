@@ -74,12 +74,13 @@
 			     <u-tabs :current="tabs" :list="list1" @click="changeTab"></u-tabs>
 			   </u-sticky>
  			<view class="product-list">
- 				<view class="product" v-for="paper in paperList" :key="paper.docid" @tap="toGoods(paper)">
+ 				<view class="product" v-for="(paper,i) in paperList" :key="paper.docid" @tap="toGoods(paper)">
 					<navigator class="item" hover-class="none" :url="'/pages/details/details?id=' + paper.docid">
 						<image mode="widthFix" :src="paper.pic_url"></image>
 						<view class="name">{{paper.doctitle}}</view>
 						<view class="info">
-							<view class="price"><uni-icons type="heart-filled" color="red" size="18"></uni-icons></view>
+							<view @click="collect(paper,i)" class="price"><u-icon v-if="paper.is_collect==0" name="star" size="38"></u-icon>
+							<u-icon v-else name="star-fill" color="#ff570a" size="38"></u-icon></view>
 							<view class="slogan">{{paper.doc_creator_name}}</view>
 						</view>
 					</navigator>
@@ -181,6 +182,55 @@ import { mapState, mapMutations } from 'vuex';
 		this.getPages()
 	},
  	methods: {
+		// TODO 调试token
+		collect(paper,i,e){
+			var ev = e || window.event;
+			  if(ev && ev.stopPropagation) {
+			    //非IE浏览器
+			    ev.stopPropagation();
+			  } else {
+			    //IE浏览器(IE11以下)
+			    ev.cancelBubble = true;
+			  }
+			  if(this.userInfo.session==null){
+			  	uni.showToast({
+			  		title: "请先登录",
+			  		duration: 1000,
+			  	})
+			  	return 
+			  }
+			  this.paperList[i].is_collect=this.paperList[i].is_collect==0?1:0
+			  let httpData = {
+			  	user_id :this.userInfo.userId,
+			  	doc_id : paper.docid,
+			  	status:this.paperList[i].is_collect
+			  }
+			  
+			  uni.request({
+			  	url:'/api/doc/collect_doc',
+			  	withCredentials:true,
+			  	header:{
+			  		'Xj-Token':this.userInfo.session
+			  	},
+			  	method:'POST',
+			  	data:httpData,
+			  	
+			  	success: (res) => {
+			  		
+			  		uni.showToast({
+			  			title: "收藏成功",
+			  			duration: 1000, 
+			  		})
+			  	},
+			  	fail:(e)=>{
+			  		uni.showToast({
+			  			title: e,
+			  			duration: 1000,
+			  		})
+			  	}
+			  	
+			  })
+		},
 		edit(){
 			uni.navigateTo({
 				url: '/pages/tabbar-3-detial/tabbar-3-video/tabbar-3-video'

@@ -63,7 +63,7 @@ export default {
 			this.$store.commit('clearPL')
 			if(e){
 				this.title = e.title,
-				this.type = e.type
+				this.type = e.type|0
 				this.keyword=e.keyword
 			}
 			this.getPages()
