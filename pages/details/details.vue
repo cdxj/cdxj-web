@@ -141,6 +141,8 @@ export default {
 				tmp.likeNum = 0
 				tmp.content = arr[i].discuss_content
 				tmp.createTime = arr[i].created_at
+				tmp.reply_user_id = arr[i].reply_user_id
+				tmp.discuss_user_id = arr[i].discuss_user_id
 				if(arr[i].children_discuss.length>0){
 					tmp.children = []
 					let child = arr[i].children_discuss
@@ -155,6 +157,8 @@ export default {
 						t.hasLike = false
 						t.likeNum = 0
 						t.content = child[j].discuss_content
+						t.reply_user_id = child[j].reply_user_id
+						t.discuss_user_id = child[j].discuss_user_id
 						tmp.children.push(t)
 						t = {}
 					}
@@ -210,7 +214,7 @@ export default {
 				})
 		},
 		add(e){
-			console.log(this.userInfo.session)
+			// console.log(this.userInfo.session)
 			if(this.userInfo.session==null){
 				uni.showToast({
 					title: "请先登录",
@@ -222,12 +226,13 @@ export default {
 			let httpData = {
 				doc_id :this.paper.docid,
 				discuss_content : e.content,
-				parent_id : '',
+				parent_id : null,
 				reply_user_id:0
 			}
+			console.log('e',e)
 			if(e.pId != null){
 				httpData.parent_id = e.pId
-				httpData.reply_user_id = this.userInfo.userId
+				httpData.reply_user_id = e.reply_user_id
 			}
 			
 			uni.request({

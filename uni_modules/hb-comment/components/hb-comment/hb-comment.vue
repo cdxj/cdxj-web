@@ -20,7 +20,7 @@
 			<view class="comment-num">
 				<view>共 {{commentData.commentSize}} 条评论</view>
 				<view class="add-btn">
-					<button type="primary" size="mini" @click="commentInput">发表评论</button>
+					<button type="primary" size="mini" @click="commentInput(false)">发表评论</button>
 				</view>
 			</view>
 			<!-- 评论主体-顶部数量及发表评论按钮-end -->
@@ -59,7 +59,7 @@
 						</view>
 						<view class="comment-main-foot">
 							<view class="foot-time">{{item.createTime}}</view>
-							<view class="foot-btn" @click="reply(item.nickName,item.nickName,item.id)">回复</view>
+							<view class="foot-btn" @click="reply(item.nickName,item.nickName,item.id,item.discuss_user_id)">回复</view>
 							<view class="foot-btn" v-if="item.owner" @click="confirmDelete(item.id)">删除</view>
 						</view>
 						<!-- 父评论体-end -->
@@ -92,7 +92,7 @@
 									</view>
 									<view class="comment-main-foot">
 										<view class="foot-time">{{each.createTime}}</view>
-										<view class="foot-btn" @click="reply(item.nickName,each.nickName,item.id)">
+										<view class="foot-btn" @click="reply(item.nickName,each.nickName,item.id,each.discuss_user_id)">
 											回复</view>
 										<view class="foot-btn" v-if="each.owner" @click="confirmDelete(each.id)">删除
 										</view>
@@ -109,7 +109,7 @@
 		<!-- 评论主体-end -->
 		<!-- 无评论-start -->
 		<view class="comment-none" v-else>
-			暂无评论，<span @click="commentInput" style="color: #007AFF;">抢沙发</span>
+			暂无评论，<span @click="commentInput(false)" style="color: #007AFF;">抢沙发</span>
 		</view>
 		<!-- 无评论-end -->
 		<!-- 新增评论-start -->
@@ -168,7 +168,8 @@
 				"placeholder": "请输入评论",
 				"commentReq": {
 					"pId": null, // 评论父id
-					"content": null // 评论内容
+					"content": null, // 评论内容
+					"reply_user_id":0
 				},
 				"pUser": null, // 标签-回复人
 				"showTag": false, // 标签展示与否
@@ -192,13 +193,15 @@
 				// 	}
 				// }
 				this.commentData = cmData;
+				console.log('init',this.commentData)
 			},
 			// 没用的方法，但不要删
 			stopPrevent() {},
 			// 回复评论
-			reply(pUser, reUser, pId) {
-				this.pUser = pUser;
+			reply(pUser, reUser, pId,reply) {
+				this.pUser = reUser;
 				this.commentReq.pId = pId;
+				this.commentReq.reply_user_id=reply
 				if (reUser) {
 					this.commentReq.content = '@' + reUser + ' ';
 				} else {
@@ -230,7 +233,9 @@
 					});
 					return
 				}
+				
 				this.$emit('add', this.commentReq);
+				this.commentReq.content=''
 			},
 			// 点赞评论
 			like(commentId) {
@@ -310,7 +315,12 @@
 				this.commentReq.pId = null;
 			},
 			// 输入评论
-			commentInput() {
+			commentInput(flag=true) {
+				if(!flag){
+					this.commentReq.pId=null
+					this.commentReq.reply_user_id=null
+				}
+				this.showTag=flag
 				// TODO 调起键盘方法
 				this.submit = true;
 				setTimeout(() => {

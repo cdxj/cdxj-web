@@ -157,7 +157,7 @@
 			},
 			activeColor: {
 				type: String,
-				default: '#007AFF'
+				default: 'white'
 			},
 			activeTextColor: {
 				type: String,
