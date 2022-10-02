@@ -58,9 +58,9 @@ export default {
 			console.log('清楚')
 		},
 		search(){
-			if(this.keyword==''){
-				return
-			}
+			// if(this.keyword==''){
+			// 	return
+			// }
 			this.$store.commit('setSearchTabs',this.keyword)
 			this.s(this.keyword)
 			this.keyword=''

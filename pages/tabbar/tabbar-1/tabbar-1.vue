@@ -74,7 +74,7 @@
 			     <u-tabs :current="tabs" :list="list1" @click="changeTab"></u-tabs>
 			   </u-sticky>
  			<view class="product-list">
- 				<view class="product" v-for="(paper,i) in paperList" :key="paper.docid" @tap="toGoods(paper)">
+ 				<view class="product" v-for="(paper,i) in paperList" :key="i" @tap="toGoods(paper)">
 					<navigator class="item" hover-class="none" :url="'/pages/details/details?id=' + paper.docid">
 						<image mode="widthFix" :src="paper.pic_url"></image>
 						<view class="name">{{paper.doctitle}}</view>
@@ -97,7 +97,7 @@
 import { mapState, mapMutations } from 'vuex';
  export default {
 	computed:{
-	 	...mapState(['userInfo']),
+	 	...mapState(['userInfo','paperList']),
 	},
  	data() {
  		return {
@@ -146,20 +146,31 @@ import { mapState, mapMutations } from 'vuex';
  				]
  			],
  			//猜你喜欢列表
- 			paperList:[],
  			categoryHeight: '160px',
  			currentPageindex: 0,
  			headerPosition:"fixed",
- 			loadingText:"正在加载..."
+ 			loadingText:"正在加载...",
+			type:0,
+			tabClick: false, 
  			
  		};
  	},
- 	onLoad() {
+	onTabItemTap(e) {
+				if (e.index==0&&this.tabClick) { // 200ms 内再次点击
+					// 这里就是模拟的双击事件，可以写类似数据刷新相关处理
+					this.toTop();
+				}
+				this.tabClick = true
+				setTimeout(() => {
+					this.tabClick = false // 200ms 内没有第二次点击，就当作单击
+				}, 200)
+			},
+ 	onShow() {
  		// TODO
  		// this.$api.get('/api/part/listpart').then(res => {
  			
  		// });
-		
+		this.$store.commit('clearPL')
 		this.getPages()
  	},
  	onPageScroll(e){
@@ -179,10 +190,19 @@ import { mapState, mapMutations } from 'vuex';
  	onReady() {
 		
 	},
-	onPullDownRefresh(){
+	// onPullDownRefresh(){
+	// 	this.getPages()
+	// },
+	onReachBottom() {
 		this.getPages()
 	},
  	methods: {
+		toTop() {
+						uni.pageScrollTo({
+							scrollTop: 0,
+							duration: 100,
+						});
+					},
 		// TODO 调试token
 		collect(paper,i,e){
 			var ev = e || window.event;
@@ -238,18 +258,20 @@ import { mapState, mapMutations } from 'vuex';
 			})
 		},
 		changeTab(item){
+			console.log('item',item)
 			let index = 0
 			if(item.index!=0){
 				index = item.index+5
 			}
-			console.log(index)
-			this.getPages(index)
+			this.type =index
+			this.$store.commit('clearPL')
+			this.getPages()
 			index=0
 		},
-		getPages(type=0){
+		getPages(){
 			let httpData = {
-				nums:7,
-				type:type
+				nums:4,
+				type:this.type
 			}
 			uni.request({
 				url:'/api/part/listpart',
@@ -271,8 +293,7 @@ import { mapState, mapMutations } from 'vuex';
 					'Xj-Token':this.userInfo.session
 				},
 				success: (res) => {
-					this.paperList = res.data.data.docs
-					console.log(res)
+					this.$store.commit('setPaperList',res.data.data.docs)
 				}
 			})
 			// this.$api.post('/api/doc/get_recommend_doc',httpData).then(res => {
@@ -310,11 +331,12 @@ import { mapState, mapMutations } from 'vuex';
  		},
  		//分类跳转
  		toCategory(e){
-			console.log(e)
+			this.$store.commit('clearPL')
 			if(e.cat_id!=0){
 				this.tabs=e.cat_id-5
 				uni.showToast({title: e.title+'Loading...'});
-				this.getPages(e.cat_id)
+				this.type = e.cat_id
+				this.getPages()
 			}
 			// 索引存在问题
 			uni.navigateTo({

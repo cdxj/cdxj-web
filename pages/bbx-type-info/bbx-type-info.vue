@@ -58,7 +58,7 @@ export default {
 				// paperList:[],
 				keyword:'',
 				pageSize:0,
-				limit:3
+				limit:9
 			}
 		},
 		onLoad(e) {
