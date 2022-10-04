@@ -62,10 +62,11 @@
 	import fLogin from '@/uni_modules/f-login/components/f-login/f-login';
 	export default {
 		computed:{
-			...mapState(['userInfo']),
+			// ...mapState([]),
 		},
 		data() {
 			return {
+				userInfo:{},
 				title: 'Hello',
 				scrollTop:0,
 				moreFun: [{
@@ -94,8 +95,15 @@
 				           
 			}
 		},
-		onLoad() {
-
+		onShow() {
+let user = {}
+		uni.getStorage({
+		    key: 'user',
+		    success: function (res) {
+		       user =  JSON.parse(JSON.stringify(res.data))
+		    }
+		});
+		this.userInfo=user
 		},
 		methods: {
 		...mapMutations(['setLoginPopupShow']),
@@ -118,6 +126,7 @@
 			this.$store.commit('setLoginPopupShow',true)
 		    // this.userInfo.loginPopupShow=true
 			console.log(this.userInfo)
+			
 		},
 		}
 	}

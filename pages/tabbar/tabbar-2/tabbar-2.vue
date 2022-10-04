@@ -78,7 +78,7 @@
 import { mapState, mapMutations } from 'vuex';
  export default {
 	computed:{
-	 	...mapState(['userInfo','paperList']),
+	 	...mapState(['paperList']),
 	},
         data() {
             return {
@@ -87,10 +87,19 @@ import { mapState, mapMutations } from 'vuex';
 				type:0,
 				pageSize:0,
 				limit:3,
-				cur:0
+				cur:0,
+				userInfo:{}
             }
         },
 		onShow(){
+			let user = {}
+			uni.getStorage({
+			    key: 'user',
+			    success: function (res) {
+			       user =  JSON.parse(JSON.stringify(res.data))
+			    }
+			});
+			this.userInfo=user
 			if(this.userInfo.session==null){
 				uni.showToast({
 					title: "请先登录",

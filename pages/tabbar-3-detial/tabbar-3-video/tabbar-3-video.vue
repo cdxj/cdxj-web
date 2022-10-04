@@ -20,13 +20,14 @@ import { mapState, mapMutations } from 'vuex';
 import ActiveForm from "@/components/active-form/active-form";
 	export default {
 		computed:{
-			...mapState(['userInfo']),
+			...mapState([]),
 		},
 		components: {
 			ActiveForm,
 		},
 		data() {
 			return {
+				userInfo:{},
 				formData: [
 					{
 						id: "kjjnsasd",
@@ -135,7 +136,14 @@ import ActiveForm from "@/components/active-form/active-form";
 			}
 		},
 		onLoad() {
-			
+			let user = {}
+			uni.getStorage({
+			    key: 'user',
+			    success: function (res) {
+			       user =  JSON.parse(JSON.stringify(res.data))
+			    }
+			});
+			this.userInfo=user
 		},
 		watch:{
 			formData:{

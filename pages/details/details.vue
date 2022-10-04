@@ -5,9 +5,12 @@
 				<view class="title">{{ paper.doctitle }}</view>
 				<view class="info">
 					<view class="source-date">
-						<text class="date hidden">{{ paper.doc_creator_name }}</text>
-						<text class="date hidden">{{ paper.doc_created_at.split('T')[0] }}</text>
-						<u-tag size="mini" style='width: 70px;float: right;	margin-left:15px;text-align: center;' :text=paper.doc_type_name type="success" plain></u-tag>
+						<text style="display: inline-block;" class="date hidden">{{ paper.doc_creator_name }}</text>
+						<text style="display: inline-block;" class="date hidden">{{ paper.doc_created_at.split('T')[0] }}</text>
+						<u-tag size="mini" style='display: inline-block;width: 70px;margin-left:15px;text-align: center;' :text=paper.doc_type_name type="success" plain></u-tag>
+						<view style="display: inline-block; margin-left: 15px;" @click="collect()" class="price"><u-icon v-if="paper.is_collect==0" name="star" size="38"></u-icon>
+						<u-icon v-else name="star-fill" color="#ff570a" size="38"></u-icon>
+						</view>
 					</view>
 				</view>
 				<view v-if="paper.file_urls.length>0" style="margin-top: 40px;"  class="swiper-view">
@@ -58,7 +61,7 @@ import util from '@/common/util.js';
 import lyInput from "@/uni_modules/ly-input/components/ly-input/input.vue";
 export default {
 	computed:{
-	 	...mapState(['userInfo']),
+	 	...mapState([]),
 	},
 	components: {
 		lyInput,
@@ -94,7 +97,8 @@ export default {
 				"readNumer": 0,
 				"commentSize": 0,
 				"comment": []
-			}
+			},
+			userInfo:{}
 		};
 	},
 	onShow(e) {
@@ -106,6 +110,14 @@ export default {
 		// #ifdef H5
 		this.currentUrl = encodeURIComponent(window.location.href);
 		// #endif
+		let user = {}
+		uni.getStorage({
+		    key: 'user',
+		    success: function (res) {
+		       user =  JSON.parse(JSON.stringify(res.data))
+		    }
+		});
+		this.userInfo=user
 		this.getData();
 	},
 	onPullDownRefresh() {
@@ -120,6 +132,52 @@ export default {
 		}
 	},
 	methods: {
+		collect(){
+			// if(this.userInfo.session==null){
+			// 	uni.showToast({
+			// 		title: "请先登录",
+			// 		duration: 1000,
+			// 	})
+			// 	return 
+			// }
+			if(this.paper.is_collect==0){
+				this.paper.is_collect=1
+				
+			}else{
+				this.paper.is_collect=0
+			}
+			
+			let httpData = {
+				user_id :this.userInfo.userId,
+				doc_id : this.paper.docid,
+				status:this.paper.is_collect==0?2:1
+			}
+			
+			uni.request({
+				url:'/api/doc/collect_doc',
+				withCredentials:true,
+				header:{
+					'Xj-Token':this.userInfo.session
+				},
+				method:'POST',
+				data:httpData,
+				
+				success: (res) => {
+					
+					uni.showToast({
+						title: "操作成功",
+						duration: 1000, 
+					})
+				},
+				fail:(e)=>{
+					uni.showToast({
+						title: e,
+						duration: 1000,
+					})
+				}
+				
+			})
+		},
 		submit(e){
 			let that = this
 			console.log(e.content)

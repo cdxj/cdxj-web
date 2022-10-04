@@ -97,7 +97,7 @@
 import { mapState, mapMutations } from 'vuex';
  export default {
 	computed:{
-	 	...mapState(['userInfo','paperList']),
+	 	...mapState(['paperList']),
 	},
  	data() {
  		return {
@@ -120,7 +120,7 @@ import { mapState, mapMutations } from 'vuex';
 			}, {
 				name: '定点帮扶'
 			}, {
-				name: '名优博产'
+				name: '名优特新'
 			}],
 			value: 0,
 			ishide:false,
@@ -142,7 +142,7 @@ import { mapState, mapMutations } from 'vuex';
  					{ cat_id: 10, img: '/static/HM-shophome/category-img/3.png', title: '农村美食' },
  					{ cat_id: 11, img: '/static/HM-shophome/category-img/4.png', title: '农村投资' },
  					{ cat_id: 12, img: '/static/HM-shophome/category-img/5.png', title: '定点帮扶' },
- 					{ cat_id: 13, img: '/static/HM-shophome/category-img/6.png', title: '名优博产' },
+ 					{ cat_id: 13, img: '/static/HM-shophome/category-img/6.png', title: '名优特新' },
  				]
  			],
  			//猜你喜欢列表
@@ -152,6 +152,7 @@ import { mapState, mapMutations } from 'vuex';
  			loadingText:"正在加载...",
 			type:0,
 			tabClick: false, 
+			userInfo:{}
  			
  		};
  	},
@@ -170,6 +171,14 @@ import { mapState, mapMutations } from 'vuex';
  		// this.$api.get('/api/part/listpart').then(res => {
  			
  		// });
+		let user = {}
+		uni.getStorage({
+		    key: 'user',
+		    success: function (res) {
+		       user =  JSON.parse(JSON.stringify(res.data))
+		    }
+		});
+		this.userInfo=user
 		this.$store.commit('clearPL')
 		this.getPages()
  	},
@@ -187,7 +196,7 @@ import { mapState, mapMutations } from 'vuex';
              uni.stopPullDownRefresh();
          }, 1000);
      },
- 	onReady() {
+ 	onLoad() {
 		
 	},
 	// onPullDownRefresh(){
@@ -198,11 +207,11 @@ import { mapState, mapMutations } from 'vuex';
 	},
  	methods: {
 		toTop() {
-						uni.pageScrollTo({
-							scrollTop: 0,
-							duration: 100,
-						});
-					},
+			uni.pageScrollTo({
+				scrollTop: 0,
+				duration: 100,
+			});
+		},
 		// TODO 调试token
 		collect(paper,i,e){
 			var ev = e || window.event;
@@ -213,6 +222,8 @@ import { mapState, mapMutations } from 'vuex';
 			    //IE浏览器(IE11以下)
 			    ev.cancelBubble = true;
 			  }
+			  console.log(this.userInfo)
+
 			  if(this.userInfo.session==null){
 			  	uni.showToast({
 			  		title: "请先登录",
@@ -269,6 +280,7 @@ import { mapState, mapMutations } from 'vuex';
 			index=0
 		},
 		getPages(){
+			console.log(2)
 			let httpData = {
 				nums:4,
 				type:this.type

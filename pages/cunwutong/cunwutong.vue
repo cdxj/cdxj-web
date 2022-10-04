@@ -90,7 +90,7 @@
 import { mapState, mapMutations } from 'vuex';
  export default {
 	computed:{
-	 	...mapState(['userInfo']),
+	 	...mapState([]),
 	},
  	data() {
  		return {
@@ -144,7 +144,8 @@ import { mapState, mapMutations } from 'vuex';
  			categoryHeight: '160px',
  			currentPageindex: 0,
  			headerPosition:"fixed",
- 			loadingText:"正在加载..."
+ 			loadingText:"正在加载...",
+			userInfo:{}
  			
  		};
  	},
@@ -153,7 +154,14 @@ import { mapState, mapMutations } from 'vuex';
  		// this.$api.get('/api/part/listpart').then(res => {
  			
  		// });
-		
+		let user = {}
+		uni.getStorage({
+		    key: 'user',
+		    success: function (res) {
+		       user =  JSON.parse(JSON.stringify(res.data))
+		    }
+		});
+		this.userInfo=user
 		this.getPages()
  	},
  	onPageScroll(e){

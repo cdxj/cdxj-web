@@ -61,7 +61,7 @@ export default {
 				limit:9
 			}
 		},
-		onLoad(e) {
+		onShow(e) {
 			this.$store.commit('clearPL')
 			if(e){
 				this.title = e.title,

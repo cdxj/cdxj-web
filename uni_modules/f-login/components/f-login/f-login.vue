@@ -9,7 +9,7 @@
                     <image class="img" src="/static/logo.png"></image>
                 </view>
                 <view class="title">欢迎登录~</view>
-                <view class="text">会员用户登录后消费可享受折扣，享受更好的服务体验</view>
+                <!-- <view class="text">会员用户登录后消费可享受折扣，享受更好的服务体验</view> -->
                 <view class="loginButton" v-if="!isPhoneLogin">
                     <!-- #ifdef MP-WEIXIN -->
                     <button class="button" open-type="getPhoneNumber" @getphonenumber="decryptPhoneNumber" :style="{background:PrimaryColor}">微信手机号登录</button>
@@ -192,8 +192,8 @@ export default {
             this.isPhoneLogin = true//是否显示验证码登录
             // #endif
             // #ifndef APP-PLUS
-            this.isLoading = true
-            this.isPhoneLogin = false//是否显示验证码登录
+            // this.isLoading = false
+            // this.isPhoneLogin = false//是否显示验证码登录
             // #endif
 		},
         // 自动静默登录----获取code
@@ -313,6 +313,7 @@ export default {
 						icon: 'none'
 					});
 				this.setLoginPopupShow(false);
+
 				let obj = {
 					session:res.data.SESSION,
 					name:res.data.data.name,
@@ -322,7 +323,7 @@ export default {
 					managerPart:res.data.data.manager_part,
 					phone:res.data.data.phone
 				}
-				console.log(obj)
+				uni.setStorage({key: 'user',data: obj});
 				this.$store.commit('setUserInfo',obj)
 					this.getCodeState(); //开始倒计时
 			    }
