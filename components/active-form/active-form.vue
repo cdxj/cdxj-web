@@ -307,6 +307,9 @@ export default {
         }
     },
     methods: {
+		clearPic(){
+			console.log('resd')
+		},
         // 删除图片
         async deletePic($event, item) {
             item.rules.fileList.splice($event.index, 1)
@@ -349,6 +352,7 @@ export default {
 						user: 'test'
 					},
 					success: (res) => {
+						console.log(JSON.parse(res.data).data)
 						resolve(JSON.parse(res.data).data.fileid)
 						// setTimeout(() => {
 						this.tmpPicUrl = JSON.parse(res.data).data.fileurl

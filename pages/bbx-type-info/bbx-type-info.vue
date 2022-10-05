@@ -58,16 +58,31 @@ export default {
 				// paperList:[],
 				keyword:'',
 				pageSize:0,
-				limit:9
+				limit:9,
+				userInfo:{}
 			}
 		},
-		onShow(e) {
-			this.$store.commit('clearPL')
+		onLoad(e) {
+			console.log('e',e)
 			if(e){
 				this.title = e.title,
 				this.type = e.type|0
 				this.keyword=e.keyword
 			}
+			console.log('type',this.type)
+		},
+		onShow() {
+			
+			this.$store.commit('clearPL')	
+			let user = {}
+			uni.getStorage({
+			    key: 'user',
+			    success: function (res) {
+			       user =  JSON.parse(JSON.stringify(res.data))
+			    }
+			});
+			this.userInfo=user
+			
 			this.getPages()
 		},
 		methods: {
@@ -100,6 +115,9 @@ export default {
 				uni.request({
 					url:'/api/doc/get_type_docinfo',
 					method:'POST',
+					header:{
+						'Xj-Token':this.userInfo.session
+					},
 					data:httpData,
 					success: (res) => {
 						this.$store.commit('setPaperListAll',res.data.data.docs)
@@ -120,6 +138,9 @@ export default {
 				uni.request({
 					url:'/api/doc/get_type_docinfo',
 					method:'POST',
+					header:{
+						'Xj-Token':this.userInfo.session
+					},
 					data:httpData,
 					success: (res) => {
 						this.$store.commit('setPaperList',res.data.data.docs)

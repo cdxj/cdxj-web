@@ -348,7 +348,7 @@ import { mapState, mapMutations } from 'vuex';
 				this.tabs=e.cat_id-5
 				uni.showToast({title: e.title+'Loading...'});
 				this.type = e.cat_id
-				this.getPages()
+				// this.getPages()
 			}
 			// 索引存在问题
 			uni.navigateTo({

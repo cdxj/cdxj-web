@@ -10,7 +10,7 @@
 		        >
 		        </u-navbar>
 				
-		<active-form v-model="formData" num></active-form>
+		<active-form ref="child" v-model="formData" num></active-form>
 		<!-- <view class="subform" @click="">发布</view> -->
 	</view>
 </template>
@@ -49,7 +49,7 @@ import ActiveForm from "@/components/active-form/active-form";
 						type: "file",
 						accept: 'image',//接受的文件类型，file只支持H5（只有微信小程序才支持把accept配置为all、media）  可选 all | media | image | file | video
 						capture: ['album', 'camera'],// 图片或视频拾取模式，当accept为image类型时设置capture可选额外camera可以直接调起摄像头 String | Array
-						maxCount: 2, //最大选择图片的数量
+						maxCount: 6, //最大选择图片的数量
 						sizeType: ['original', 'compressed'],//original 原图，compressed 压缩图，默认二者都有，H5无效
 						compressed: true,//当accept为video时生效，是否压缩视频，默认为true  Boolean true    false
 						camera: 'back', //当accept为video时生效，可选值为back或front   String  back    -
@@ -148,7 +148,7 @@ import ActiveForm from "@/components/active-form/active-form";
 		watch:{
 			formData:{
 				handler(new_val,old_val){
-					// console.log('new',new_val)
+					console.log('new',new_val)
 					// console.log('old',old_val)
 				},
 				deep: true
@@ -197,6 +197,11 @@ import ActiveForm from "@/components/active-form/active-form";
 					method:'POST',
 					data:params,
 					success: (res) => {
+						this.formData[0].rules.value=''
+												this.formData[1].rules.picRet=[]
+												this.formData[2].rules.value=0
+												this.formData[3].rules.value=''
+												 this.$refs.child.clearPic()
 						uni.navigateTo({url: `/pages/details/details?id= ${res.data.data.doc_id}`})
 					}
 				})

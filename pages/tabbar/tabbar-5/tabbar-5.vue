@@ -63,7 +63,21 @@
 	export default {
 		computed:{
 			// ...mapState([]),
+			f1(){
+				return this.$store.state.userInfo
+			}
 		},
+		watch: {
+		    f1(curVal, oldVal) {
+		          //这里的curVal就是需要监听的值
+				  if(curVal.session!=''){
+					  console.log('refresh')
+					 uni.reLaunch({
+						 url:'/pages/tabbar/tabbar-5/tabbar-5'
+					 })
+				  }
+		    }
+		 },
 		data() {
 			return {
 				userInfo:{},
@@ -91,6 +105,10 @@
 				    icon: '/static/img/page5/funMoreIcon5.png',
 				    word: '关于我们',
 				    onPlate: 'goAbout',
+				}, {
+				    icon: '/static/img/page5/funMoreIcon1.png',
+				    word: '退出应用',
+				    onPlate: 'goExit',
 				}],
 				           
 			}
@@ -114,16 +132,22 @@ let user = {}
 		    // })
 		},
 		navClick(event){
-			console.log(event)
-			this.$refs.uToast.show({
-				type: 'error',
-				title:'警告',
-				message:'权限缺失,请切换账号!'
-			})
-			console.log(event)
+			if(event=='goExit'){
+				uni.removeStorage({key: 'user'});
+				this.userInfo={}
+
+			}else{
+				this.$refs.uToast.show({
+					type: 'error',
+					title:'警告',
+					message:'权限缺失,请切换账号!'
+				})
+			}
+			
 		},
 		openLogin(){
 			this.$store.commit('setLoginPopupShow',true)
+			
 		    // this.userInfo.loginPopupShow=true
 			console.log(this.userInfo)
 			

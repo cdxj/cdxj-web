@@ -308,10 +308,19 @@ export default {
 				data:httpData,
 			    url: '/api/user/login_sms', 
 			    success: (res) => {
-					uni.showToast({
-						title: '登录成功~',
-						icon: 'none'
-					});
+					console.log(res)
+					if(res.data.code==-1){
+						uni.showToast({
+							title: '登录失败~',
+							icon: 'none'
+						});
+					}else{
+						uni.showToast({
+							title: '登录成功~',
+							icon: 'none'
+						});
+					}
+					
 				this.setLoginPopupShow(false);
 
 				let obj = {
